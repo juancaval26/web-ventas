@@ -1,0 +1,31 @@
+[debug] [2024-03-25T22:11:02.923Z] ----------------------------------------------------------------------
+[debug] [2024-03-25T22:11:02.927Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\admin\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2024-03-25T22:11:02.928Z] CLI Version:   13.5.2
+[debug] [2024-03-25T22:11:02.928Z] Platform:      win32
+[debug] [2024-03-25T22:11:02.928Z] Node Version:  v21.7.0
+[debug] [2024-03-25T22:11:02.928Z] Time:          Mon Mar 25 2024 17:11:02 GMT-0500 (hora estándar de Colombia)
+[debug] [2024-03-25T22:11:02.929Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-03-25T22:11:03.022Z] Object ".hosting" in "firebase.json" has unknown property: {"additionalProperty":"sitio"}
+[debug] [2024-03-25T22:11:03.022Z] Field ".hosting" in "firebase.json" is possibly invalid: should be array
+[debug] [2024-03-25T22:11:03.022Z] Field ".hosting" in "firebase.json" is possibly invalid: should match some schema in anyOf
+[debug] [2024-03-25T22:11:03.030Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-03-25T22:11:03.031Z] > authorizing via signed-in user (juancamilovalderrama@gmail.com)
+[debug] [2024-03-25T22:11:03.032Z] Object ".hosting" in "firebase.json" has unknown property: {"additionalProperty":"sitio"}
+[debug] [2024-03-25T22:11:03.032Z] Field ".hosting" in "firebase.json" is possibly invalid: should be array
+[debug] [2024-03-25T22:11:03.032Z] Field ".hosting" in "firebase.json" is possibly invalid: should match some schema in anyOf
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  E:\sitios-web\my-app
+
+Before we get started, keep in mind:
+
+  * You are initializing within an existing Firebase project directory
+

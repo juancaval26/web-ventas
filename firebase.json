@@ -1,0 +1,15 @@
+{
+    "hosting": {
+        "public": "build",
+        "sitio": "diamond-market-8509c.firebaseapp",
+        "ignore": [
+            "firebase.json",
+            "**/.*",
+            "**/node_modules/**"
+        ],
+        "rewrites": [{
+            "source": "**",
+            "destination": "/index.html"
+        }]
+    }
+}
