@@ -22,6 +22,8 @@ function CrearProducto({ ProductoCreado }) {
     talla: '',
     color: '',
     precio: '',
+    descripcion: '',
+    tipo: 'Replica AAA',
     fecha: fecha,
     imagenUrls: [],
   });
@@ -68,6 +70,8 @@ function CrearProducto({ ProductoCreado }) {
         talla: '',
         color: '',
         precio: '',
+        descripcion: '',
+        tipo: 'Replica AAA',
         fecha: fecha,
         imagenUrls: [],
       });
@@ -115,6 +119,10 @@ function CrearProducto({ ProductoCreado }) {
             <Form.Group controlId="formPrecio">
               <Form.Label>Precio</Form.Label>
               <Form.Control type="number" name="precio" value={nuevoProducto.precio} onChange={handleChange}/>
+            </Form.Group>
+            <Form.Group controlId="formDescripcion">
+              <Form.Label>Descripción</Form.Label>
+              <Form.Control as='textarea' name="descripcion" value={nuevoProducto.descripcion} onChange={handleChange}/>
             </Form.Group>
             <Form.Group controlId="formImagen">
                 <Form.Label>Imagen</Form.Label>

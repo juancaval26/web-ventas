@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { ref, getDownloadURL } from 'firebase/storage';
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/storage';
-import { Carousel } from 'react-bootstrap';
-import { Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import Image from 'react-bootstrap/Image';
-
+import { Container, Row, Col, Card } from 'react-bootstrap'; // Importa Card, Row y Col de react-bootstrap
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore';
 
 function GaleriaGeneral({ rutaImagenes }) {
-  const [productos, setProductos] = useState([]);
+  const [productosPorMarca, setProductosPorMarca] = useState({});
 
   useEffect(() => {
     const fetchProductos = async () => {
@@ -17,7 +13,7 @@ function GaleriaGeneral({ rutaImagenes }) {
         const db = firebase.firestore();
         const productosSnapshot = await db.collection('producto').get();
         const productosData = productosSnapshot.docs.map((doc) => doc.data());
-        setProductos(productosData);
+        agruparProductosPorMarca(productosData);
       } catch (error) {
         console.error('Error al obtener los productos:', error);
       }
@@ -26,52 +22,52 @@ function GaleriaGeneral({ rutaImagenes }) {
     fetchProductos();
   }, []);
 
-  const getImageUrlFromStorage = async (imageName) => {
-    const storage = firebase.storage();
-    const storageRef = ref(storage, `${rutaImagenes}/${imageName}`);
-    return getDownloadURL(storageRef);
-  };
-  
-  const getImageUrls = async () => {
-    const storage = firebase.storage();
-    const storageRef = storage.ref(rutaImagenes);
-    const imagenes = await storageRef.listAll();
-    const imageNames = imagenes.items.map((item) => item.name);
-    if (!imageNames || imageNames.length === 0) {
-      console.error('No se encontraron imágenes.');
-      return [];
-    }
-    const urls = await Promise.all(imageNames.map(imageName => getImageUrlFromStorage(imageName)));
-    return urls;
+  const agruparProductosPorMarca = (productos) => {
+    const productosPorMarcaTemp = {};
+    productos.forEach(producto => {
+      if (!(producto.marca in productosPorMarcaTemp)) {
+        productosPorMarcaTemp[producto.marca] = [];
+      }
+      productosPorMarcaTemp[producto.marca].push(producto);
+    });
+    setProductosPorMarca(productosPorMarcaTemp);
   };
 
   return (
     <Container>
-  {productos.map((producto, index) => (
-              <div key={index}>
-      <Link to={`/DetallesCalzado/${producto.marca}`}>
-                
-                {producto.imagenUrls.map((url, idx) => (
-                  <Image key={idx} src={url} alt={`Imagen ${index}-${idx}`} style={{ width: '100px' }} />
-                ))}
-            </Link>
-              </div>
+      {Object.keys(productosPorMarca).map((marca, index) => (
+        <div key={index}>
+          <h2 className='graffiti-text'>{marca}-AAA</h2>
+          <Row>
+            {productosPorMarca[marca].map((producto, idx) => (
+              <Col key={idx} xs={12} sm={6} md={4} lg={3}> {/* Ajusta el número de columnas según tus necesidades */}
+                <Card style={{ marginBottom: '20px' }}>
+                  <Link to={`/DetallesCalzado/${marca}`}>
+                    <Card.Img variant="top" src={producto.imagenUrls[0]} style={{ height: '200px', objectFit: 'cover', borderRadius: '10px 10px 0 0' }} />
+                  </Link>
+                  <Card.Body>
+                    <Card.Title>{producto.referencia}</Card.Title>
+                    <Card.Text>
+                      <strong>Talla:</strong> {producto.talla}<br />
+                      <strong>Precio:</strong> {producto.precio}<br />
+                      <strong>Colores:</strong> {producto.color}<br />
+                      <div>
+                        {producto.imagenUrls.map((imagen, index) => (
+                          <img key={index} src={imagen} alt={`Miniatura ${index}`} style={{ width: '24px', height: '24px', marginRight: '5px', borderRadius: '5px' }} />
+                        ))}
+                      </div>
+                      <strong>Envío Gratis</strong>
+                      {/* Agrega más detalles del producto según tu modelo de datos */}
+                    </Card.Text>
+                  </Card.Body>
+                </Card>
+              </Col>
             ))}
-
-{/* <div key={index}>
-      <Link to={`/DetallesCalzado/${producto.marca}`}>
-  <img src={url} alt={`Imagen ${index}`} style={{ width: '20%', height: '20%', margin: '5px', marginTop: '5%', marginRight: '5px', borderRadius: '10px' }}/>
-</Link>
-    </div> */}
-      {/* <Carousel>
-        {imageUrls.map((url, index) => (
-          <Carousel.Item key={index}>
-            <img src={url} className="d-block" alt={`Imagen ${index + 1}`} style={{ width: '20%', height: '20%', margin: '5px', marginTop: '5%', marginRight: '5px', borderRadius: '10px' }}/>
-          </Carousel.Item>
-        ))}
-      </Carousel> */}
+          </Row>
+        </div>
+      ))}
     </Container>
   );
-};
+}
 
 export default GaleriaGeneral;

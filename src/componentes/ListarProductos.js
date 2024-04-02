@@ -3,7 +3,7 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/storage';
 import 'firebase/compat/firestore';
 import firebaseConfig from './FirebaseConf';
-import { Modal, Button, Form } from 'react-bootstrap'; // Importa Modal y otros componentes de react-bootstrap
+import { Modal, Button, Form } from 'react-bootstrap';
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
@@ -13,8 +13,9 @@ const db = firebase.firestore();
 
 function ListarProductos() {
   const [productos, setProductos] = useState([]);
-  const [productoEditado, setProductoEditado] = useState(null); // Nuevo estado para almacenar el producto que se está editando
-  const [showModal, setShowModal] = useState(false); // Nuevo estado para controlar la visibilidad del modal
+  const [productoEditado, setProductoEditado] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const fetchProductos = async () => {
@@ -28,21 +29,16 @@ function ListarProductos() {
 
   const handleEliminarProducto = async (id) => {
     try {
-      // Obtener el producto que se va a eliminar
       const productoAEliminar = productos.find((producto) => producto.id === id);
-      // Obtener las URLs de las imágenes del producto
       const imagenesUrls = productoAEliminar.imagenUrls;
       
-      // Eliminar el producto de la base de datos
       await db.collection('producto').doc(id).delete();
       
-      // Eliminar cada imagen del storage de Firebase
       imagenesUrls.forEach(async (url) => {
         const imagenRef = firebase.storage().refFromURL(url);
         await imagenRef.delete();
       });
   
-      // Actualizar el estado de productos eliminando el producto eliminado
       setProductos(productos.filter((producto) => producto.id !== id));
       
       console.log('Producto eliminado exitosamente');
@@ -50,16 +46,15 @@ function ListarProductos() {
       console.error('Error al eliminar el producto:', error);
     }
   };
-  
 
   const handleEditarProducto = (producto) => {
-    setProductoEditado(producto); // Establece el producto seleccionado para edición
-    setShowModal(true); // Muestra el modal
+    setProductoEditado(producto);
+    setShowModal(true);
   };
 
   const handleCloseModal = () => {
-    setProductoEditado(null); // Restablece el producto editado
-    setShowModal(false); // Oculta el modal
+    setProductoEditado(null);
+    setShowModal(false);
   };
 
   const handleGuardarEdicion = async () => {
@@ -76,8 +71,15 @@ function ListarProductos() {
     }
   };
 
+  const productsPerPage = 7;
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = productos.slice(indexOfFirstProduct, indexOfLastProduct);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   return (
-    <div>
+    <div className="table-responsive">
       <table className="table">
         <thead>
           <tr>
@@ -92,7 +94,7 @@ function ListarProductos() {
           </tr>
         </thead>
         <tbody>
-          {productos.map((producto) => (
+          {currentProducts.map((producto) => (
             <tr key={producto.id}>
               <td>{producto.referencia}</td>
               <td>{producto.marca}</td>
@@ -101,12 +103,17 @@ function ListarProductos() {
               <td>{producto.precio}</td>
               <td>{producto.fecha}</td>
               <td>
-  {producto.imagenUrls.map((imagenUrl, index) => (
-    <img key={index} src={imagenUrl} alt={`Imagen ${index}`} style={{ width: '100px', marginRight: '5px' }} />
-  ))}
-</td>
+                {producto.imagenUrls.map((imagenUrl, index) => (
+                  <img
+                    key={index}
+                    src={imagenUrl}
+                    alt={`Imagen ${index}`}
+                    style={{ width: '100px', height: '100px', borderRadius: '100%', marginRight: '5px' }} 
+                  />
+                ))}
+              </td>
               <td>
-                <button onClick={() => handleEliminarProducto(producto.id)} className='btn btn-danger'>Eliminar</button>
+                <button onClick={() => handleEliminarProducto(producto.id)} className='btn btn-danger' style={{ margin: '5px'}}>Eliminar</button>
                 <button onClick={() => handleEditarProducto(producto)} className='btn btn-primary'>Editar</button>
               </td>
             </tr>
@@ -114,7 +121,14 @@ function ListarProductos() {
         </tbody>
       </table>
 
-      {/* Modal para editar producto */}
+      <ul className="pagination" style={{ justifyContent: 'center' }}>
+        {Array.from({ length: Math.ceil(productos.length / productsPerPage) }, (_, i) => (
+          <li key={i} className={i + 1 === currentPage ? 'page-item active' : 'page-item'}>
+            <button onClick={() => paginate(i + 1)} className="page-link">{i + 1}</button>
+          </li>
+        ))}
+      </ul>
+
       <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>
           <Modal.Title>Editar Producto</Modal.Title>
@@ -125,30 +139,7 @@ function ListarProductos() {
               <Form.Label>Referencia</Form.Label>
               <Form.Control type="text" value={productoEditado?.referencia || ''} onChange={(e) => setProductoEditado({ ...productoEditado, referencia: e.target.value })} />
             </Form.Group>
-            <Form.Group controlId="formMarca">
-              <Form.Label>Marca</Form.Label>
-              <Form.Control type="text" value={productoEditado?.marca || ''} onChange={(e) => setProductoEditado({ ...productoEditado, marca: e.target.value })} />
-            </Form.Group>
-            <Form.Group controlId="formTalla">
-              <Form.Label>Talla</Form.Label>
-              <Form.Control type="text" value={productoEditado?.talla || ''} onChange={(e) => setProductoEditado({ ...productoEditado, talla: e.target.value })} />
-            </Form.Group>
-            <Form.Group controlId="formColor">
-              <Form.Label>Color</Form.Label>
-              <Form.Control type="text" value={productoEditado?.color || ''} onChange={(e) => setProductoEditado({ ...productoEditado, color: e.target.value })} />
-            </Form.Group>
-            <Form.Group controlId="formPrecio">
-              <Form.Label>Precio</Form.Label>
-              <Form.Control type="number" value={productoEditado?.precio || ''} onChange={(e) => setProductoEditado({ ...productoEditado, precio: e.target.value })} />
-            </Form.Group>
-            <Form.Group controlId="formFecha">
-              <Form.Label>Fecha</Form.Label>
-              <Form.Control type="date" value={productoEditado?.fecha || ''} onChange={(e) => setProductoEditado({ ...productoEditado, fecha: e.target.value })} />
-            </Form.Group>
-            {/* <Form.Group controlId="formImagen">
-          <Form.Label>Imagen</Form.Label>
-            <Form.Control type="file" name="imagen" value={productoEditado?.imagen || ''} onChange={(e) => setProductoEditado({ ...productoEditado, imagen: e.target.value })} />
-          </Form.Group> */}
+            {/* Otras entradas de formulario para editar los atributos del producto */}
           </Form>
         </Modal.Body>
         <Modal.Footer>
