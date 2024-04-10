@@ -3,9 +3,9 @@ import { Modal, Button, Form } from "react-bootstrap";
 import 'firebase/compat/storage';
 import "firebase/compat/auth";
 import firebase from "firebase/compat/app";
-import firebaseConfig from "./FirebaseConf";
+import FirebaseConfig from "./FirebaseConfig";
 
-const firebaseApp = firebase.initializeApp(firebaseConfig);
+const firebaseApp = firebase.initializeApp(FirebaseConfig);
 export const auth = firebaseApp.auth();
 
 function LoginRegistro() {

@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/storage';
 import 'firebase/compat/firestore';
-import firebaseConfig from './FirebaseConf';
+import FirebaseConfig from './FirebaseConfig';
 import { Modal, Button, Form } from 'react-bootstrap';
 
 if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
+  firebase.initializeApp(FirebaseConfig);
 }
 
 const db = firebase.firestore();

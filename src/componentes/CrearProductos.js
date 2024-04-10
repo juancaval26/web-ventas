@@ -4,10 +4,10 @@ import { Form, Button, Modal } from 'react-bootstrap';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/storage';
 import 'firebase/compat/firestore';
-import firebaseConfig from './FirebaseConf';
+import FirebaseConfig from './FirebaseConfig';
 
 if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
+  firebase.initializeApp(FirebaseConfig);
 }
 
 const db = firebase.firestore();
