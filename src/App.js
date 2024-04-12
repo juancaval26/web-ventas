@@ -49,7 +49,7 @@ useEffect(() => {
           <Route path="/Hogar" element={<Hogar />} />
           <Route path='/CalzadoHombre' element={<CalzadoHombre />} />
           <Route path='/CalzadoMujer' element={<CalzadoMujer />} />
-          <Route path='/DetallesCalzado/:marca' element={<DetallesCalzado />} />
+          <Route path='/DetallesCalzado/:referencia' element={<DetallesCalzado />} />
           <Route path='/CarruselDetalle' element={<CarruselDetalle />} />
           <Route path='/CalzadoNuevo' element={<CalzadoNuevo />} />
           <Route path='/Destacados' element={<Destacados />} />

@@ -29,10 +29,10 @@ function DetallesCalzado() {
 
   const currentURL = window.location.href;
 
-// Filtrar productos basados en la coincidencia de la marca con la URL
+// Filtrar productos basados en la coincidencia de la referencia con la URL
 const productosFiltrados = productos.filter(producto => {
-  // Verificar si la marca del producto está presente en la URL
-  return currentURL.includes(producto.marca);
+  // Verificar si la referencia del producto está presente en la URL
+  return currentURL.includes(producto.referencia);
 });
 
 function cambiarImagen(rutaImagen) {
@@ -61,13 +61,13 @@ const phoneNumber = '573232059679';
             ))}
           </Col>
           <Col xs={6} sm={6} >
-            <Image id="imagenGrande" src={productosFiltrados.imagenUrls} style={{ width: '100%', height: '450px' }} rounded />
+            <Image id="imagenGrande" src={productosFiltrados.imagenUrls} style={{ width: '100%', height: '80%' }} rounded />
           </Col>
           <Col xs={6} md={4}>
           {productosFiltrados.map((producto, index) => (
               <Card key={index}>
                 <Card.Body>
-                  <Card.Title>Marca: {producto.marca}</Card.Title>
+                  <Card.Title>referencia: {producto.referencia}</Card.Title>
                   <Card.Text>
                     <label>{`Precio: ${producto.precio}`}</label><br />
                     <label>{`Talla: ${producto.talla}`} Euro 36 al 39 Dama</label><br />

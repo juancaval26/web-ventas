@@ -42,7 +42,7 @@ function GaleriaGeneral({ rutaImagenes }) {
             {productosPorMarca[marca].map((producto, idx) => (
               <Col key={idx} xs={12} sm={6} md={4} lg={3}> {/* Ajusta el número de columnas según tus necesidades */}
                 <Card style={{ marginBottom: '20px' }}>
-                  <Link to={`/DetallesCalzado/${marca}`}>
+                  <Link to={`/DetallesCalzado/${producto.referencia}`}>
                     <Card.Img variant="top" src={producto.imagenUrls[0]} style={{ height: '200px', objectFit: 'cover', borderRadius: '10px 10px 0 0' }} />
                   </Link>
                   <Card.Body>
