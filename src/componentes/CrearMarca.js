@@ -13,20 +13,10 @@ if (!firebase.apps.length) {
 const db = firebase.firestore();
 const fechaInstancia = new Date();
 const fecha = format(fechaInstancia, 'yyyy-MM-dd');
-function CrearProducto({ ProductoCreado }) {
+function CrearMarca({ ProductoCreado }) {
   
-
   const [nuevoProducto, setNuevoProducto] = useState({
-    referencia: '',
     marca: '',
-    talla: '',
-    color: '',
-    precio: '',
-    descripcion: '',
-    genero: '',
-    tipo: 'Replica AAA',
-    fecha: fecha,
-    imagenUrls: [],
   });
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -72,7 +62,6 @@ function CrearProducto({ ProductoCreado }) {
         color: '',
         precio: '',
         descripcion: '',
-        genero: '',
         tipo: 'Replica AAA',
         fecha: fecha,
         imagenUrls: [],
@@ -148,4 +137,4 @@ function CrearProducto({ ProductoCreado }) {
   );
 }
 
-export default CrearProducto;
+export default CrearMarca;

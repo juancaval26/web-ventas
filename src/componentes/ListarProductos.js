@@ -139,7 +139,26 @@ function ListarProductos() {
               <Form.Label>Referencia</Form.Label>
               <Form.Control type="text" value={productoEditado?.referencia || ''} onChange={(e) => setProductoEditado({ ...productoEditado, referencia: e.target.value })} />
             </Form.Group>
-            {/* Otras entradas de formulario para editar los atributos del producto */}
+            <Form.Group controlId="formMarca">
+              <Form.Label>Marca</Form.Label>
+              <Form.Control type="text" value={productoEditado?.marca || ''} onChange={(e) => setProductoEditado({ ...productoEditado, marca: e.target.value })} />
+            </Form.Group>
+            <Form.Group controlId="formTalla">
+              <Form.Label>Talla</Form.Label>
+              <Form.Control type="text" value={productoEditado?.talla || ''} onChange={(e) => setProductoEditado({ ...productoEditado, talla: e.target.value })} />
+            </Form.Group>
+            <Form.Group controlId="formColor">
+              <Form.Label>Color</Form.Label>
+              <Form.Control type="text" value={productoEditado?.color || ''} onChange={(e) => setProductoEditado({ ...productoEditado, color: e.target.value })} />
+            </Form.Group>
+            <Form.Group controlId="formPrecio">
+              <Form.Label>Precio</Form.Label>
+              <Form.Control type="text" value={productoEditado?.precio || ''} onChange={(e) => setProductoEditado({ ...productoEditado, precio: e.target.value })} />
+            </Form.Group>
+            <Form.Group controlId="formDescripcion">
+              <Form.Label>Descripción</Form.Label>
+              <Form.Control type="text" value={productoEditado?.descripcion || ''} onChange={(e) => setProductoEditado({ ...productoEditado, descripcion: e.target.value })} />
+            </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>

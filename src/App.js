@@ -12,7 +12,7 @@ import CalzadoHombre from './componentes/CalzadoHombre';
 import CalzadoMujer from './componentes/CalzadoMujer';
 import CarruselDetalle from './componentes/CarruselDetalle';
 import CalzadoNuevo from './componentes/CalzadoNuevo';
-import Destacados from './componentes/Destacados';
+// import Destacados from './componentes/Destacados';
 import LoginRegistro from './componentes/LoginRegistro';
 import Login from './componentes/login';
 import GaleriaGeneral from './componentes/GaleriaGeneral';
@@ -21,6 +21,7 @@ import ListarProductos from './componentes/ListarProductos';
 import CrearProducto from './componentes/CrearProductos';
 import Producto from "./componentes/Productos";
 import LogoutButton from "./componentes/Logout";
+import Sidebar from "./componentes/SideBar";
 
 
 function App() {
@@ -52,7 +53,7 @@ useEffect(() => {
           <Route path='/DetallesCalzado/:referencia' element={<DetallesCalzado />} />
           <Route path='/CarruselDetalle' element={<CarruselDetalle />} />
           <Route path='/CalzadoNuevo' element={<CalzadoNuevo />} />
-          <Route path='/Destacados' element={<Destacados />} />
+          {/* <Route path='/Destacados' element={<Destacados />} /> */}
           <Route path='/LoginRegistro' element={<LoginRegistro />} />
           <Route path='/Login' element={<Login />} />
           <Route path='/GaleriaGeneral' element={<GaleriaGeneral />} />
@@ -61,6 +62,7 @@ useEffect(() => {
           <Route path='/CrearProducto' element={<CrearProducto />} />
           <Route path='/Producto' element={<Producto />} />
           <Route path='/LogoutButton' element={<LogoutButton />} />
+          <Route path='/Sidebar' element={<Sidebar />} />
           
         </Routes>
     </Router>

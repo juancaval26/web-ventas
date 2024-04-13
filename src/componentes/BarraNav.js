@@ -28,7 +28,7 @@ function BarraNav({ isAuthenticated }) {
               </NavDropdown.Item>
             </NavDropdown> */}
             <Nav.Link href="/" style={{ margin: '30px' }}>Inicio</Nav.Link>
-            <Nav.Link href="/Destacados" style={{ margin: '30px' }}>Destacado</Nav.Link>
+            {/* <Nav.Link href="/Destacados" style={{ margin: '30px' }}>Destacado</Nav.Link> */}
             <Nav.Link href="/CalzadoNuevo" style={{ margin: '30px' }}>Nuevo</Nav.Link>
             {isAuthenticated && (
               <Nav.Link href="/Producto" style={{ margin: '30px' }}>

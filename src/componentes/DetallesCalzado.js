@@ -49,19 +49,19 @@ const phoneNumber = '573232059679';
   
   return (
     <div style={{ float: 'left' }}>
-      <Container style={{ marginLeft: '0', marginRight: '0', 'display': 'flex', 'height': '100vh', alignItems: 'center' }} >
-        <Row style={{ marginLeft: '0', marginRight: '0', justifyContent: 'center', 'display': 'flex' }}>
+      <Container style={{  marginTop: '70px' }}>
+        <Row>
           <Col xs={6} sm={2}>
             {productosFiltrados.map((producto, index) => (
               <div key={index}>
                 {producto.imagenUrls.map((url, idx) => (
-                  <Image key={idx} src={url} onMouseMove={() => cambiarImagen(url)} alt={`Imagen ${index}-${idx}`} style={{ width: '60%', cursor:'pointer', marginBottom: '5px', margin: '5px', borderRadius: '10px'  }} title={`${index}-${idx}`} />
+                  <Image key={idx} src={url} onMouseMove={() => cambiarImagen(url)} alt={`Imagen ${index}-${idx}`} style={{ width: '50%', height:'60%', cursor:'pointer', marginBottom: '5px', margin: '4px', borderRadius: '100%'  }} title={`${index}-${idx}`} />
                 ))}
               </div>
             ))}
           </Col>
           <Col xs={6} sm={6} >
-            <Image id="imagenGrande" src={productosFiltrados.imagenUrls} style={{ width: '100%', height: '80%' }} rounded />
+            <Image id="imagenGrande" src={productosFiltrados.imagenUrls} style={{ width: '100%', height: '60%' }} rounded />
           </Col>
           <Col xs={6} md={4}>
           {productosFiltrados.map((producto, index) => (
