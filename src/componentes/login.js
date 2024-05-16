@@ -44,7 +44,7 @@ function Login() {
                 role: "admin" // Aquí asigna el rol según tus necesidades
             });
         } catch (error) {
-            console.error("Error al hacer login:", error.message);
+            alert("Correo/contraseña incorrecta");
         }
     };
 
@@ -53,8 +53,8 @@ function Login() {
             {!isAuthenticated && (
                 <Form>
                     <Form.Group className="col-sm-4">
-                        <Form.Label>Email</Form.Label>
-                        <Form.Control type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                        <Form.Label>Correo</Form.Label>
+                        <Form.Control type="email" placeholder="Correo" value={email} onChange={(e) => setEmail(e.target.value)}/>
                     </Form.Group>
                     <Form.Group className="col-sm-4">
                         <Form.Label>Contraseña</Form.Label>
@@ -65,7 +65,7 @@ function Login() {
             )}
 
             {isAuthenticated && userRole === "admin" && (
-                <Button onClick={handleLogout} className="btn btn-danger">Cerrar sesión</Button>
+                <Button onClick={handleLogout} className="btn btn-danger">Entrar</Button>
             )}
         </Container>
     );

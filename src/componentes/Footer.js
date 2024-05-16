@@ -1,42 +1,21 @@
 import React from 'react';
-import { Container, Row, Col, Card, Pagination } from 'react-bootstrap';
+import Nav from 'react-bootstrap/Nav';
+
 
 function Footer() {
   return (
-    // <div className="container">
-    //   <footer className="py-3 my-4">
-    //       <div className="row">
-    //         <div className="col-md-4">
-    //           <h4>Contacto</h4>
-    //           <li><a href='https://wa.me/573235062841'>Whatsapp</a></li>
-    //         </div>
-    //         <div className="col-md-4">
-    //           <h4>Información Legal</h4>
-    //           <ul>
-    //             <li><a href="https://www.termsfeed.com/live/f533fc70-3525-4010-a9f4-6ed6d7e24d6a" target='blank'>Política de Privacidad</a></li>
-    //             <li><a href="https://www.termsfeed.com/live/1198691b-b59a-4f5b-a1eb-9fa961583df6" target='blank'>Términos de Uso</a></li>
-    //           </ul>
-    //         </div>
-    //         <div className="col-md-4">
-    //           <h4>Redes Sociales</h4>
-    //           <ul>
-    //             <li><a href="#">Facebook</a></li>
-    //             <li><a href="#">Instagram</a></li>
-    //           </ul>
-    //         </div>
-    //       </div>
-    //   </footer>
-    //   </div>
-
-    // <div>
-
     <div className="container">
       <footer class="text-center text-white" style={{ backgroundColor: '#ffffff' }}>
-        <div className="container p-4 pb-0">
+        <div className="container mb-4">
           <section className="mb-4">
-            <a href="https://www.termsfeed.com/live/f533fc70-3525-4010-a9f4-6ed6d7e24d6a" target='blank'>Política de Privacidad</a><br />
-            <a href="https://www.termsfeed.com/live/1198691b-b59a-4f5b-a1eb-9fa961583df6" target='blank'>Términos de Uso</a>
+            <Nav.Link href="" style={{'fontFamily': "Gill Sans, sans-serif", color: 'black', 'text-decoration': 'none'}}>Facebook</Nav.Link>
+            <Nav.Link href="" style={{'fontFamily': "Gill Sans, sans-serif", color: 'black', 'text-decoration': 'none'}}>Instagram</Nav.Link>
+            <Nav.Link style={{'fontFamily': "Gill Sans, sans-serif", color: 'black', 'text-decoration': 'none'}}>juancamilovalderrama@gmail.com</Nav.Link>
+          </section>
 
+          <section className="mb-4">
+          <Nav.Link href="https://www.termsfeed.com/live/f533fc70-3525-4010-a9f4-6ed6d7e24d6a" style={{ 'text-decoration': 'none', color: 'black', }} target='blank'>Política de Privacidad</Nav.Link>
+          <Nav.Link href="https://www.termsfeed.com/live/1198691b-b59a-4f5b-a1eb-9fa961583df6" style={{ 'text-decoration': 'none', color: 'black', }} target='blank'>Términos de Uso</Nav.Link>
           </section>
         </div>
         <div className="text-center text-dark p-3" style={{ backgroundColor: 'rgba(0, 0, 0, 0.0)' }}>
@@ -44,7 +23,6 @@ function Footer() {
           <a className="text-dark" href="https://mdbootstrap.com/">MDBootstrap.com</a>
         </div>
       </footer>
-
     </div>
 
   );

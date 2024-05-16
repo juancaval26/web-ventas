@@ -20,7 +20,7 @@ function CrearProducto({ ProductoCreado }) {
     referencia: '',
     marca: '',
     talla: '',
-    color: '',
+    // color: '',
     precio: '',
     descripcion: '',
     genero: '',
@@ -69,7 +69,7 @@ function CrearProducto({ ProductoCreado }) {
         referencia: '',
         marca: '',
         talla: '',
-        color: '',
+        // color: '',
         precio: '',
         descripcion: '',
         genero: '',
@@ -114,17 +114,24 @@ function CrearProducto({ ProductoCreado }) {
               <Form.Label>Talla</Form.Label>
               <Form.Control type="text" name="talla" value={nuevoProducto.talla} onChange={handleChange}/>
             </Form.Group>
-            <Form.Group controlId="formColor">
+            {/* <Form.Group controlId="formColor">
               <Form.Label>Color</Form.Label>
               <Form.Control type="text" name="color" value={nuevoProducto.color} onChange={handleChange}/>
-            </Form.Group>
+            </Form.Group> */}
             <Form.Group controlId="formPrecio">
               <Form.Label>Precio</Form.Label>
               <Form.Control type="number" name="precio" value={nuevoProducto.precio} onChange={handleChange}/>
             </Form.Group>
             <Form.Group controlId="formDescripcion">
               <Form.Label>Descripción</Form.Label>
-              <Form.Control as='textarea' name="descripcion" value={nuevoProducto.descripcion} onChange={handleChange}/>
+              <Form.Control as='textarea' rows={5} name="descripcion" value={
+                nuevoProducto.descripcion || 'Fabricación Colombiana, queremos brindarte siempre los mejores productos a los mejores precios Siéntete cómod@ y a la moda con nuestros estilos y combínalos de la manera que tú quieras, los productos están elaborados en los mejores materiales.'} 
+              
+              onChange={handleChange}/>
+            </Form.Group>
+            <Form.Group controlId="formReGenero">
+              <Form.Label>Género</Form.Label>
+              <Form.Control type="text" name="genero" value={nuevoProducto.genero} onChange={handleChange}/>
             </Form.Group>
             <Form.Group controlId="formImagen">
                 <Form.Label>Imagen</Form.Label>

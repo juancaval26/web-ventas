@@ -21,8 +21,7 @@ import ListarProductos from './componentes/ListarProductos';
 import CrearProducto from './componentes/CrearProductos';
 import Producto from "./componentes/Productos";
 import LogoutButton from "./componentes/Logout";
-import Sidebar from "./componentes/SideBar";
-
+import Sidebar from "./componentes/Sidebar";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);

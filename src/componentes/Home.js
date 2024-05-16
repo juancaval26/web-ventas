@@ -16,7 +16,6 @@ function Home() {
   return (
     <div>
     <GaleriaGeneral />
-    {/* <GaleriaInicio /> */}
     <Footer />
   </div>
   );
