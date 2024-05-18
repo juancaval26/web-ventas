@@ -1,9 +1,12 @@
+// ListarProductos.js
 import React, { useState, useEffect } from 'react';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/storage';
 import 'firebase/compat/firestore';
 import FirebaseConfig from './FirebaseConfig';
 import { Modal, Button, Form } from 'react-bootstrap';
+import CrearProducto from './CrearProductos';
+import { handleImageChange } from './Utilidades'; // Importa la función
 
 if (!firebase.apps.length) {
   firebase.initializeApp(FirebaseConfig);
@@ -16,6 +19,8 @@ function ListarProductos() {
   const [productoEditado, setProductoEditado] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(false);  // Estado del spinner
+
 
   useEffect(() => {
     const fetchProductos = async () => {
@@ -43,9 +48,9 @@ function ListarProductos() {
 
       setProductos(productos.filter((producto) => producto.id !== id));
 
-      console.log('Producto eliminado exitosamente');
+      alert('Producto eliminado exitosamente');
     } catch (error) {
-      console.error('Error al eliminar el producto:', error);
+      alert('Error al eliminar el producto:', error);
     }
   };
 
@@ -54,9 +59,9 @@ function ListarProductos() {
       const imagenRef = firebase.storage().refFromURL(imageUrl);
       await imagenRef.delete();
 
-      const productoIndex = productos.findIndex(producto => producto.id === productoId);
+      const productoIndex = productos.findIndex((producto) => producto.id === productoId);
       const updatedProductos = [...productos];
-      updatedProductos[productoIndex].imagenUrls = updatedProductos[productoIndex].imagenUrls.filter(url => url !== imageUrl);
+      updatedProductos[productoIndex].imagenUrls = updatedProductos[productoIndex].imagenUrls.filter((url) => url !== imageUrl);
 
       await db.collection('producto').doc(productoId).update({
         imagenUrls: updatedProductos[productoIndex].imagenUrls,
@@ -86,14 +91,13 @@ function ListarProductos() {
         await db.collection('producto').doc(productoEditado.id).update(productoEditado);
         const updatedProductos = productos.map((p) => (p.id === productoEditado.id ? productoEditado : p));
         setProductos(updatedProductos);
-        console.log('Cambios guardados exitosamente');
+        alert('Cambios guardados exitosamente');
         handleCloseModal();
       }
     } catch (error) {
-      console.error('Error al guardar los cambios:', error);
+      alert('Error al guardar los cambios:', error);
     }
   };
-
 
   const productsPerPage = 7;
   const indexOfLastProduct = currentPage * productsPerPage;
@@ -138,7 +142,7 @@ function ListarProductos() {
                     />
                     <button
                       onClick={() => handleEliminarImg(imageUrl, producto.id)}
-                      className='btn btn-danger'
+                      className="btn btn-danger"
                       style={{
                         position: 'absolute',
                         top: '0',
@@ -151,7 +155,7 @@ function ListarProductos() {
                         height: '20px',
                         fontSize: '12px',
                         lineHeight: '15px',
-                        padding: '0'
+                        padding: '0',
                       }}
                     >
                       X
@@ -160,8 +164,12 @@ function ListarProductos() {
                 ))}
               </td>
               <td>
-                <button onClick={() => handleEliminarProducto(producto.id)} className='btn btn-danger' style={{ margin: '5px' }}>Eliminar</button>
-                <button onClick={() => handleEditarProducto(producto)} className='btn btn-primary'>Editar</button>
+                <button onClick={() => handleEliminarProducto(producto.id)} className="btn btn-danger" style={{ margin: '5px' }}>
+                  Eliminar
+                </button>
+                <button onClick={() => handleEditarProducto(producto)} className="btn btn-primary">
+                  Editar
+                </button>
               </td>
             </tr>
           ))}
@@ -171,7 +179,9 @@ function ListarProductos() {
       <ul className="pagination" style={{ justifyContent: 'center' }}>
         {Array.from({ length: Math.ceil(productos.length / productsPerPage) }, (_, i) => (
           <li key={i} className={i + 1 === currentPage ? 'page-item active' : 'page-item'}>
-            <button onClick={() => paginate(i + 1)} className="page-link">{i + 1}</button>
+            <button onClick={() => paginate(i + 1)} className="page-link">
+              {i + 1}
+            </button>
           </li>
         ))}
       </ul>
@@ -204,11 +214,17 @@ function ListarProductos() {
             </Form.Group>
             <Form.Group controlId="formDescripcion">
               <Form.Label>Descripción</Form.Label>
-              <Form.Control as='textarea' rows={5} value={productoEditado?.descripcion || ''} onChange={(e) => setProductoEditado({ ...productoEditado, descripcion: e.target.value })} />
+              <Form.Control as="textarea" rows={5} value={productoEditado?.descripcion || ''} onChange={(e) => setProductoEditado({ ...productoEditado, descripcion: e.target.value })} />
             </Form.Group>
             <Form.Group controlId="formImagen">
               <Form.Label>Imagen</Form.Label>
-              <Form.Control type="file" accept="image/*" multiple onChange={(e) => setProductoEditado({ ...productoEditado, imagenUrls: [...productoEditado.imagenUrls, ...Array.from(e.target.files).map(file => URL.createObjectURL(file))] })} name="imagen" />
+              <Form.Control
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={(e) => handleImageChange(e, productoEditado, setProductoEditado, setLoading)} // Usa la función aquí
+                name="imagen"
+              />
               {productoEditado?.imagenUrls.map((imageUrl, index) => (
                 <div key={index}>
                   <img src={imageUrl} alt={`Imagen ${index}`} style={{ width: '20%', marginTop: '15px', marginBottom: '10px', margin: '3px' }} />
