@@ -31,19 +31,42 @@ function ListarProductos() {
     try {
       const productoAEliminar = productos.find((producto) => producto.id === id);
       const imagenesUrls = productoAEliminar.imagenUrls;
-      
+
       await db.collection('producto').doc(id).delete();
-      
-      imagenesUrls.forEach(async (url) => {
+
+      const deleteImagePromises = imagenesUrls.map(async (url) => {
         const imagenRef = firebase.storage().refFromURL(url);
         await imagenRef.delete();
       });
-  
+
+      await Promise.all(deleteImagePromises);
+
       setProductos(productos.filter((producto) => producto.id !== id));
-      
+
       console.log('Producto eliminado exitosamente');
     } catch (error) {
       console.error('Error al eliminar el producto:', error);
+    }
+  };
+
+  const handleEliminarImg = async (imageUrl, productoId) => {
+    try {
+      const imagenRef = firebase.storage().refFromURL(imageUrl);
+      await imagenRef.delete();
+
+      const productoIndex = productos.findIndex(producto => producto.id === productoId);
+      const updatedProductos = [...productos];
+      updatedProductos[productoIndex].imagenUrls = updatedProductos[productoIndex].imagenUrls.filter(url => url !== imageUrl);
+
+      await db.collection('producto').doc(productoId).update({
+        imagenUrls: updatedProductos[productoIndex].imagenUrls,
+      });
+
+      setProductos(updatedProductos);
+
+      alert('Imagen eliminada exitosamente');
+    } catch (error) {
+      alert('Error al eliminar la imagen:');
     }
   };
 
@@ -71,6 +94,7 @@ function ListarProductos() {
     }
   };
 
+
   const productsPerPage = 7;
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
@@ -86,7 +110,6 @@ function ListarProductos() {
             <th>Referencia</th>
             <th>Marca</th>
             <th>Talla</th>
-            {/* <th>Color</th> */}
             <th>Precio</th>
             <th>Fecha</th>
             <th>Descripción</th>
@@ -101,23 +124,43 @@ function ListarProductos() {
               <td>{producto.referencia}</td>
               <td>{producto.marca}</td>
               <td>{producto.talla}</td>
-              {/* <td>{producto.color}</td> */}
               <td>{producto.precio}</td>
               <td>{producto.fecha}</td>
               <td>{producto.descripcion}</td>
               <td>{producto.genero}</td>
               <td>
-                {producto.imagenUrls.map((imagenUrl, index) => (
-                  <img
-                    key={index}
-                    src={imagenUrl}
-                    alt={`Imagen ${index}`}
-                    style={{ width: '50px', height: '50px', borderRadius: '100%', marginRight: '5px' }} 
-                  />
+                {producto.imagenUrls.map((imageUrl, index) => (
+                  <div key={index} style={{ position: 'relative', display: 'inline-block' }}>
+                    <img
+                      src={imageUrl}
+                      alt={`Imagen ${index}`}
+                      style={{ width: '50px', height: '50px', borderRadius: '100%', marginRight: '5px' }}
+                    />
+                    <button
+                      onClick={() => handleEliminarImg(imageUrl, producto.id)}
+                      className='btn btn-danger'
+                      style={{
+                        position: 'absolute',
+                        top: '0',
+                        right: '0',
+                        background: 'black',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '50%',
+                        width: '20px',
+                        height: '20px',
+                        fontSize: '12px',
+                        lineHeight: '15px',
+                        padding: '0'
+                      }}
+                    >
+                      X
+                    </button>
+                  </div>
                 ))}
               </td>
               <td>
-                <button onClick={() => handleEliminarProducto(producto.id)} className='btn btn-danger' style={{ margin: '5px'}}>Eliminar</button>
+                <button onClick={() => handleEliminarProducto(producto.id)} className='btn btn-danger' style={{ margin: '5px' }}>Eliminar</button>
                 <button onClick={() => handleEditarProducto(producto)} className='btn btn-primary'>Editar</button>
               </td>
             </tr>
@@ -151,10 +194,6 @@ function ListarProductos() {
               <Form.Label>Talla</Form.Label>
               <Form.Control type="text" value={productoEditado?.talla || ''} onChange={(e) => setProductoEditado({ ...productoEditado, talla: e.target.value })} />
             </Form.Group>
-            {/* <Form.Group controlId="formColor">
-              <Form.Label>Color</Form.Label>
-              <Form.Control type="text" value={productoEditado?.color || ''} onChange={(e) => setProductoEditado({ ...productoEditado, color: e.target.value })} />
-            </Form.Group> */}
             <Form.Group controlId="formPrecio">
               <Form.Label>Precio</Form.Label>
               <Form.Control type="text" value={productoEditado?.precio || ''} onChange={(e) => setProductoEditado({ ...productoEditado, precio: e.target.value })} />
@@ -167,16 +206,14 @@ function ListarProductos() {
               <Form.Label>Descripción</Form.Label>
               <Form.Control as='textarea' rows={5} value={productoEditado?.descripcion || ''} onChange={(e) => setProductoEditado({ ...productoEditado, descripcion: e.target.value })} />
             </Form.Group>
-            {/* <Form.Group controlId="formImagen">
-              <Form.Label>Imagen</Form.Label>
-              <Form.Control type='text' accept="image/*" multiple value={productoEditado?.imagenUrls || ''} onChange={(e) => setProductoEditado({ ...productoEditado, imagenUrls: e.target.value })} />
-            </Form.Group> */}
             <Form.Group controlId="formImagen">
-                <Form.Label>Imagen</Form.Label>
-                <Form.Control type="file" accept="image/*" multiple onChange={productoEditado} name="imagen"/>
-                {productoEditado?.imagenUrls.map((imageUrl, index) => (
-                  <img key={index} src={imageUrl} alt={`Imagen ${index}`} style={{ width: '20%', marginTop: '15px', marginBottom: '10px', margin: '3px' }}/>
-                ))}
+              <Form.Label>Imagen</Form.Label>
+              <Form.Control type="file" accept="image/*" multiple onChange={(e) => setProductoEditado({ ...productoEditado, imagenUrls: [...productoEditado.imagenUrls, ...Array.from(e.target.files).map(file => URL.createObjectURL(file))] })} name="imagen" />
+              {productoEditado?.imagenUrls.map((imageUrl, index) => (
+                <div key={index}>
+                  <img src={imageUrl} alt={`Imagen ${index}`} style={{ width: '20%', marginTop: '15px', marginBottom: '10px', margin: '3px' }} />
+                </div>
+              ))}
             </Form.Group>
           </Form>
         </Modal.Body>

@@ -65,7 +65,7 @@ function Login() {
             )}
 
             {isAuthenticated && userRole === "admin" && (
-                <Button onClick={handleLogout} className="btn btn-danger">Entrar</Button>
+                <Button onClick={handleLogout} className="btn btn-success">Usuario: {userRole}</Button>
             )}
         </Container>
     );
