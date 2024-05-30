@@ -4,11 +4,10 @@ import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Card from 'react-bootstrap/Card';
-import Footer from './Footer';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import '../App.css';
-import CalzadoNuevo from './CalzadoNuevo';
+import Destacados from './Destacados';
 
 function DetallesCalzado() {
   const [productos, setProductos] = useState([]);
@@ -72,7 +71,7 @@ function DetallesCalzado() {
     setImagenActual(rutaImagen);
   };
 
-  const phoneNumber = '573232059679'; 
+  const phoneNumber = '573502133562'; 
   const message = 'Estoy interesado en: '; 
   const messageWithImage = `${message} ${imagenActual}`;
   const url = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(messageWithImage)}`;
@@ -115,10 +114,10 @@ function DetallesCalzado() {
             {productosFiltrados.map((producto, index) => (
               <Card key={index} style={{ marginBottom: '10px' }} >
                 <Card.Body>
-                  <Card.Title>{producto.referencia}</Card.Title>
+                  <Card.Title>{producto.nombre}</Card.Title>
                   <Card.Text>
                     <strong>Precio:</strong> {producto.precio}<br />
-                    <strong>Color:</strong> {producto.color}<br />
+                    <strong>Color:</strong> Variado<br />
                     <strong>Talla:</strong> {producto.talla}<br />
                     <strong>Marca:</strong> {producto.marca}<br />
                     <strong>Referencia:</strong> {producto.referencia}<br />
@@ -171,24 +170,31 @@ function DetallesCalzado() {
               <br></br>
               <br></br>
 
-              Garantía x meses: La garantía inicia a partir de la fecha de entrega del producto. x días calendario en calzado.
-              No aplica garantía: Ruptura de materiales, partes que integran el zapato y demás accesorios ocasionados por mal uso.
+              La garantía inicia a partir de la fecha de entrega del producto.
+              <br></br>
+              No aplica garantía: Ruptura de materiales, partes que integran el zapato y demás accesorios 
+              ocasionados por mal uso.
+              <br></br>
               Para cambio, los zapatos deben de estar en perfectas condiciones de higiene.
               <br></br>
               <br></br>
               Horario de Atención Servicio al Cliente:
+              <br></br>
               Lunes a Sábado de 9:00 a.m. a 8:00 p.m.
               <br></br>
+              <br></br>
 
-              IMPORTANTE: Si tienes algún cambio nos puedes escribir por interno y con gusto hacemos cualquier cambio!, Tallas disponibles las que vez al momento de seleccionar.
+              IMPORTANTE: Si tienes algún cambio nos puedes escribir por interno y con gusto hacemos cualquier cambio!.
+              <br></br>
+              Tallas disponibles las que vez al momento de seleccionar.
               <br></br>
 
             </p>
           </Col>
         </Row>
       </Container>
-      <h1 style={{ margin:'10px',  textAlign: 'center'}}>Calzado Nuevo</h1>
-      <CalzadoNuevo />
+      <h1 style={{ margin:'10px',  textAlign: 'center'}}>Calzado Destacado</h1>
+      <Destacados />
     </div>
   );
 }

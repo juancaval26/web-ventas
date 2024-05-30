@@ -12,7 +12,7 @@ import CalzadoHombre from './componentes/CalzadoHombre';
 import CalzadoMujer from './componentes/CalzadoMujer';
 import CarruselDetalle from './componentes/CarruselDetalle';
 import CalzadoNuevo from './componentes/CalzadoNuevo';
-// import Destacados from './componentes/Destacados';
+import Destacados from './componentes/Destacados';
 import LoginRegistro from './componentes/LoginRegistro';
 import Login from './componentes/login';
 import GaleriaGeneral from './componentes/GaleriaGeneral';
@@ -25,6 +25,7 @@ import Sidebar from "./componentes/Sidebar";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [selectedGender, setSelectedGender] = useState(null);
 
 useEffect(() => {
   const unsubscribe = firebase.auth().onAuthStateChanged(user => {
@@ -42,7 +43,7 @@ useEffect(() => {
 
     return (
       <Router>
-        <Navbar isAuthenticated={isAuthenticated}/> 
+        <Navbar isAuthenticated={isAuthenticated} setSelectedGender={setSelectedGender}/>
         <Routes>
         <Route path="/" element={<Home />} />
           <Route path="/CalzadoGeneral" element={<CalzadoGeneral />} />
@@ -52,17 +53,16 @@ useEffect(() => {
           <Route path='/DetallesCalzado/:referencia' element={<DetallesCalzado />} />
           <Route path='/CarruselDetalle' element={<CarruselDetalle />} />
           <Route path='/CalzadoNuevo' element={<CalzadoNuevo />} />
-          {/* <Route path='/Destacados' element={<Destacados />} /> */}
+          <Route path='/Destacados' element={<Destacados />} />
           <Route path='/LoginRegistro' element={<LoginRegistro />} />
           <Route path='/Login' element={<Login />} />
-          <Route path='/GaleriaGeneral' element={<GaleriaGeneral />} />
+          <Route path='/GaleriaGeneral/:genero' element={<GaleriaGeneral generoSeleccionado={selectedGender} />} />
           <Route path='/GaleriaImagenes' element={<GaleriaImagenes />} />
           <Route path='/ListarProductos' element={<ListarProductos />} />
           <Route path='/CrearProducto' element={<CrearProducto />} />
           <Route path='/Producto' element={<Producto />} />
           <Route path='/LogoutButton' element={<LogoutButton />} />
           <Route path='/Sidebar' element={<Sidebar />} />
-          
         </Routes>
     </Router>
     );

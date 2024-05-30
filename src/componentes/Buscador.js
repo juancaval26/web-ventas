@@ -14,7 +14,7 @@ function Buscador({ onBuscar }) {
       <input
         type="search"
         className="form-control"
-        placeholder="Buscar..."
+        placeholder="Buscar Nombre, Marca o referencia."
         value={busqueda}
         onChange={handleBusqueda}
       />

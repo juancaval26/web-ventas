@@ -5,7 +5,7 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import Buscador from "./Buscador"; 
 
-function GaleriaGeneral({ rutaImagenes }) {
+function GaleriaGeneral() {
   const [productosPorMarca, setProductosPorMarca] = useState({});
   const [productosFiltrados, setProductosFiltrados] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
@@ -23,7 +23,10 @@ function GaleriaGeneral({ rutaImagenes }) {
       try {
         const db = firebase.firestore();
         const productosSnapshot = await db.collection('producto').get();
-        const productosData = productosSnapshot.docs.map((doc) => doc.data());
+        const productosData = productosSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
         agruparProductosPorMarca(productosData);
       } catch (error) {
         console.error('Error al obtener los productos:', error);
@@ -62,6 +65,20 @@ function GaleriaGeneral({ rutaImagenes }) {
     setProductosFiltrados(productosFiltrados);
   };
 
+  const handleImageClick = async (producto) => {
+    const db = firebase.firestore();
+    const productoRef = db.collection('producto').doc(producto.id);
+    
+    try {
+      await productoRef.update({
+        clickCount: firebase.firestore.FieldValue.increment(1)
+      });
+      console.log(`Incremented click count for product ${producto.referencia}`);
+    } catch (error) {
+      console.error('Error incrementing click count:', error);
+    }
+  };
+
   return (
     <Container fluid>
       <Row>
@@ -76,15 +93,15 @@ function GaleriaGeneral({ rutaImagenes }) {
                 {productosFiltrados[marca].slice(indexOfFirstProduct, indexOfLastProduct).map((producto, idx) => (
                   <Col key={idx} xs={6} sm={6} md={4} lg={3}>
                     <Card style={{ marginBottom: '10px' }}>
-                      <Link to={`/DetallesCalzado/${producto.referencia}`}>
+                      <Link to={`/DetallesCalzado/${producto.referencia}`} onClick={() => handleImageClick(producto)}>
                         <Card.Img variant="top" src={producto.imagenUrls[0]} style={{ height: '180px', objectFit: 'cover', borderRadius: '10px 10px 0 0' }} />
                       </Link>
                       <Card.Body>
                         <Card.Title>
-                          {producto.marca.charAt(0).toUpperCase() + producto.marca.slice(1)}</Card.Title>
+                          {producto.marca.charAt(0).toUpperCase() + producto.marca.slice(1)}
+                        </Card.Title>
                         <Card.Text>
                           <strong>Precio:</strong> {producto.precio}<br />
-                          {/* <strong>Color:</strong> {producto.color}<br /> */}
                           <strong>Envío Gratis</strong>
                         </Card.Text>
                         <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>

@@ -17,6 +17,7 @@ const fecha = format(fechaInstancia, 'yyyy-MM-dd');
 
 function CrearProducto({ ProductoCreado }) {
   const [nuevoProducto, setNuevoProducto] = useState({
+    nombre: '',
     referencia: '',
     marca: '',
     talla: '',
@@ -47,6 +48,7 @@ function CrearProducto({ ProductoCreado }) {
       ProductoCreado(productoConImagenes);
 
       setNuevoProducto({
+        nombre: '',
         referencia: '',
         marca: '',
         talla: '',
@@ -82,21 +84,25 @@ function CrearProducto({ ProductoCreado }) {
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
+          <Form.Group controlId="formReferencia">
+              <Form.Label>Nombre</Form.Label>
+              <Form.Control type="text" name="nombre" value={nuevoProducto.nombre} onChange={handleChange} placeholder='Nombre'/>
+            </Form.Group>
             <Form.Group controlId="formReferencia">
               <Form.Label>Referencia</Form.Label>
-              <Form.Control type="text" name="referencia" value={nuevoProducto.referencia} onChange={handleChange} />
+              <Form.Control type="text" name="referencia" value={nuevoProducto.referencia} onChange={handleChange} placeholder='Referencia'/>
             </Form.Group>
             <Form.Group controlId="formMarca">
               <Form.Label>Marca</Form.Label>
-              <Form.Control type="text" name="marca" value={nuevoProducto.marca} onChange={handleChange} />
+              <Form.Control type="text" name="marca" value={nuevoProducto.marca} onChange={handleChange} placeholder='Marca'/>
             </Form.Group>
             <Form.Group controlId="formTalla">
               <Form.Label>Talla</Form.Label>
-              <Form.Control type="text" name="talla" value={nuevoProducto.talla} onChange={handleChange} />
+              <Form.Control type="text" name="talla" value={nuevoProducto.talla} onChange={handleChange} placeholder='Talla'/>
             </Form.Group>
             <Form.Group controlId="formPrecio">
               <Form.Label>Precio</Form.Label>
-              <Form.Control type="number" name="precio" value={nuevoProducto.precio} onChange={handleChange} />
+              <Form.Control type="number" name="precio" value={nuevoProducto.precio} onChange={handleChange} placeholder='Precio'/>
             </Form.Group>
             <Form.Group controlId="formDescripcion">
               <Form.Label>Descripción</Form.Label>
@@ -113,7 +119,7 @@ function CrearProducto({ ProductoCreado }) {
             </Form.Group>
             <Form.Group controlId="formReGenero">
               <Form.Label>Género</Form.Label>
-              <Form.Control type="text" name="genero" value={nuevoProducto.genero} onChange={handleChange} />
+              <Form.Control type="text" name="genero" value={nuevoProducto.genero} onChange={handleChange} placeholder='Genero'/>
             </Form.Group>
             <Form.Group controlId="formImagen">
               <Form.Label>Imagen</Form.Label>
