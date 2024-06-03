@@ -7,6 +7,7 @@ import FirebaseConfig from './FirebaseConfig';
 import { Modal, Button, Form } from 'react-bootstrap';
 import CrearProducto from './CrearProductos';
 import { handleImageChange } from './Utilidades'; // Importa la función
+import Buscador from './Buscador';
 
 if (!firebase.apps.length) {
   firebase.initializeApp(FirebaseConfig);
@@ -20,7 +21,7 @@ function ListarProductos() {
   const [showModal, setShowModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);  // Estado del spinner
-
+  const [busqueda, setBusqueda] = useState(''); 
 
   useEffect(() => {
     const fetchProductos = async () => {
@@ -106,8 +107,12 @@ function ListarProductos() {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  const handleBuscar = (term) => {
+    setBusqueda(term);
+  };
   return (
     <div className="table-responsive">
+      <Buscador onBuscar={handleBuscar} />
       <table className="table">
         <thead>
           <tr>
@@ -123,7 +128,12 @@ function ListarProductos() {
           </tr>
         </thead>
         <tbody>
-          {currentProducts.map((producto) => (
+        {productos
+          .filter((producto) =>
+            // Filtra los productos basados en el término de búsqueda
+            producto.referencia.toLowerCase().includes(busqueda.toLowerCase()) ||
+            producto.marca.toLowerCase().includes(busqueda.toLowerCase())
+          ).map((producto) => (
             <tr key={producto.id}>
               <td>{producto.referencia}</td>
               <td>{producto.marca}</td>

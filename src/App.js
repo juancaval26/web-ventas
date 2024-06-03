@@ -8,8 +8,7 @@ import Home from './componentes/Home';
 import CalzadoGeneral from './componentes/CalzadoGeneral';
 import DetallesCalzado from './componentes/DetallesCalzado';
 import Hogar from './componentes/Hogar';
-import CalzadoHombre from './componentes/CalzadoHombre';
-import CalzadoMujer from './componentes/CalzadoMujer';
+import CalzadoGenero from './componentes/CalzadoGenero';
 import CarruselDetalle from './componentes/CarruselDetalle';
 import CalzadoNuevo from './componentes/CalzadoNuevo';
 import Destacados from './componentes/Destacados';
@@ -48,15 +47,14 @@ useEffect(() => {
         <Route path="/" element={<Home />} />
           <Route path="/CalzadoGeneral" element={<CalzadoGeneral />} />
           <Route path="/Hogar" element={<Hogar />} />
-          <Route path='/CalzadoHombre' element={<CalzadoHombre />} />
-          <Route path='/CalzadoMujer' element={<CalzadoMujer />} />
+          <Route path='/CalzadoGenero/:genero' element={<CalzadoGenero />} />
           <Route path='/DetallesCalzado/:referencia' element={<DetallesCalzado />} />
           <Route path='/CarruselDetalle' element={<CarruselDetalle />} />
           <Route path='/CalzadoNuevo' element={<CalzadoNuevo />} />
           <Route path='/Destacados' element={<Destacados />} />
           <Route path='/LoginRegistro' element={<LoginRegistro />} />
           <Route path='/Login' element={<Login />} />
-          <Route path='/GaleriaGeneral/:genero' element={<GaleriaGeneral generoSeleccionado={selectedGender} />} />
+          <Route path='/GaleriaGeneral/:marca' element={<GaleriaGeneral />} />
           <Route path='/GaleriaImagenes' element={<GaleriaImagenes />} />
           <Route path='/ListarProductos' element={<ListarProductos />} />
           <Route path='/CrearProducto' element={<CrearProducto />} />

@@ -140,7 +140,7 @@ function DetallesCalzado() {
           <Col xs={12} md={12} style={{ marginTop: '40px' }}>
             <hr />
             <h2>Descripción</h2>
-            <p>
+            <label>
               BIENVENIDO A LA TIENDA OFICIAL DE DIAMOND MARKET
               <br></br>
               <br></br>
@@ -189,7 +189,7 @@ function DetallesCalzado() {
               Tallas disponibles las que vez al momento de seleccionar.
               <br></br>
 
-            </p>
+            </label>
           </Col>
         </Row>
       </Container>

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Container, Row, Col, Card, Pagination } from 'react-bootstrap';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import Buscador from "./Buscador"; 
 
-function GaleriaGeneral() {
-  const [productosPorMarca, setProductosPorMarca] = useState({});
+function CalzadoGenero() {
+  const { genero } = useParams();
+  const [productosGenero, setproductosGenero] = useState({});
   const [productosFiltrados, setProductosFiltrados] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 10; // Define la cantidad de productos por página
@@ -22,40 +23,40 @@ function GaleriaGeneral() {
     const fetchProductos = async () => {
       try {
         const db = firebase.firestore();
-        const productosSnapshot = await db.collection('producto').get();
+        const productosSnapshot = await db.collection('producto').where('genero', '==', genero).get();
         const productosData = productosSnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
-        agruparProductosPorMarca(productosData);
+        agruparproductosGenero(productosData);
       } catch (error) {
         console.error('Error al obtener los productos:', error);
       }
     };
 
     fetchProductos();
-  }, []);
+  }, [genero]);
 
   useEffect(() => {
     // Cuando cambia la búsqueda, actualiza los productos filtrados
-    setProductosFiltrados(productosPorMarca);
-  }, [productosPorMarca]);
+    setProductosFiltrados(productosGenero);
+  }, [productosGenero]);
 
-  const agruparProductosPorMarca = (productos) => {
-    const productosPorMarcaTemp = {};
+  const agruparproductosGenero = (productos) => {
+    const productosGeneroTemp = {};
     productos.forEach(producto => {
-      if (!(producto.marca in productosPorMarcaTemp)) {
-        productosPorMarcaTemp[producto.marca] = [];
+      if (!(producto.marca in productosGeneroTemp)) {
+        productosGeneroTemp[producto.marca] = [];
       }
-      productosPorMarcaTemp[producto.marca].push(producto);
+      productosGeneroTemp[producto.marca].push(producto);
     });
-    setProductosPorMarca(productosPorMarcaTemp);
+    setproductosGenero(productosGeneroTemp);
   };
 
   const handleBuscar = (busqueda) => {
     const productosFiltrados = {};
-    Object.keys(productosPorMarca).forEach(marca => {
-      const productosFiltradosPorMarca = productosPorMarca[marca].filter(producto =>
+    Object.keys(productosGenero).forEach(marca => {
+      const productosFiltradosPorMarca = productosGenero[marca].filter(producto =>
         producto.marca.toLowerCase().includes(busqueda.toLowerCase()) || producto.referencia.toLowerCase().includes(busqueda.toLowerCase())
       );
       if (productosFiltradosPorMarca.length > 0) {
@@ -73,7 +74,7 @@ function GaleriaGeneral() {
       await productoRef.update({
         clickCount: firebase.firestore.FieldValue.increment(1)
       });
-        // console.log(`Incremented click count for product ${producto.referencia}`);
+        alert(`Incremented click count for product ${producto.referencia}`);
     } catch (error) {
         alert('Error incrementing click count:', error);
     }
@@ -130,4 +131,4 @@ function GaleriaGeneral() {
   );
 }
 
-export default GaleriaGeneral;
+export default CalzadoGenero;

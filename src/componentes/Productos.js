@@ -4,7 +4,6 @@ import ListarProductos from './ListarProductos';
 import CrearProducto from './CrearProductos';
 import FirebaseConfig from './FirebaseConfig';
 import firebase from 'firebase/compat/app';
-// import Container from 'react-bootstrap/Container';
 
 if (!firebase.apps.length) {
     firebase.initializeApp(FirebaseConfig);
@@ -30,8 +29,12 @@ function Producto() {
 
   return (
     <div>
+      <div className='mb-2 m-2' >
       <CrearProducto  ProductoCreado={ProductoCreado}/>
+      </div>
+      <div className='mb-2 m-2' >
       <ListarProductos productos={productos}/>
+      </div>
       <Footer></Footer> 
       </div> 
 

@@ -4,6 +4,7 @@ import 'firebase/compat/firestore';
 import FirebaseConfig from './FirebaseConfig';
 import GaleriaGeneral from './GaleriaGeneral';
 import Footer from './Footer';
+import CarruselInicio from './CarruselInicio';
 
 if (!firebase.apps.length) {
   firebase.initializeApp(FirebaseConfig);
@@ -15,6 +16,7 @@ function Home() {
 
   return (
     <div>
+    <CarruselInicio/>
     <GaleriaGeneral />
     <Footer />
   </div>
