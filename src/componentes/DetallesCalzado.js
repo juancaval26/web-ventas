@@ -71,8 +71,8 @@ function DetallesCalzado() {
     setImagenActual(rutaImagen);
   };
 
-  const phoneNumber = '573502133562'; 
-  const message = 'Estoy interesado en: '; 
+  const phoneNumber = '573502133562';
+  const message = 'Estoy interesado en: ';
   const messageWithImage = `${message} ${imagenActual}`;
   const url = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(messageWithImage)}`;
 
@@ -86,22 +86,24 @@ function DetallesCalzado() {
             <Row className="justify-content-center">
               <Col xs={12} sm={6} lg={12}>
                 {productosFiltrados.length > 0 && (
-                  <Image id="imagenGrande" src={imagenActual} style={{ width: '100%', height: '320px' }} rounded />
+                  <Image id="imagenGrande" src={imagenActual} style={{ width: '100%', height: '400px' }} rounded />
                 )}
               </Col>
             </Row>
             {/* Imágenes pequeñas */}
-            <Row className="" style={{ marginTop: '5px' }}>
+            <Row style={{ marginTop: '5px', marginLeft:'10%' }}>
               {productosFiltrados.map((producto, index) => (
                 producto.imagenUrls.map((url, idx) => (
-                  <Col key={`${index}-${idx}`}>
-                    <Image
-                      src={url}
-                      onClick={() => cambiarImagen(url)}
-                      onMouseMove={!isMobile ? () => cambiarImagen(url) : null}
-                      alt={`Imagen ${index}-${idx}`}
-                      style={{ width: '30px', height: '30px', cursor: 'pointer', borderRadius: '10px'}}
-                    />
+                  <Col key={`${index}-${idx}`} xs="auto" className="p-0">
+                    <label className='form-control m-1 p-1'>
+                      <Image
+                        src={url}
+                        onClick={() => cambiarImagen(url)}
+                        onMouseMove={!isMobile ? () => cambiarImagen(url) : null}
+                        alt={`Imagen ${index}-${idx}`}
+                        style={{ width: '50px', height: '50px', cursor: 'pointer', borderRadius: '10px' }}
+                      />
+                    </label>
                   </Col>
                 ))
               ))}
@@ -110,7 +112,7 @@ function DetallesCalzado() {
 
           {/* Columna de referencias */}
           <Col xs={12} lg={6} sm={6} className='justify-content-center align-items-center'>
-            <h3 className='mt-4'>Detalles</h3>
+            <h3 className=''>Detalles</h3>
             {productosFiltrados.map((producto, index) => (
               <Card key={index} style={{ marginBottom: '10px' }} >
                 <Card.Body>
@@ -123,8 +125,8 @@ function DetallesCalzado() {
                     <strong>Referencia:</strong> {producto.referencia}<br />
                     <strong>Descripción:</strong> {producto.descripcion}<br />
                     <strong>Mas Información</strong>
-                    <a href={url} target="_blank" style={{ width: '192px', height: '192px'}}>
-                      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/800px-WhatsApp.svg.png"  style={{ width: '10%'}} alt="" />
+                    <a href={url} target="_blank" style={{ width: '192px', height: '192px' }}>
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/800px-WhatsApp.svg.png" style={{ width: '10%' }} alt="" />
                     </a>
                   </Card.Text>
                 </Card.Body>
@@ -172,7 +174,7 @@ function DetallesCalzado() {
 
               La garantía inicia a partir de la fecha de entrega del producto.
               <br></br>
-              No aplica garantía: Ruptura de materiales, partes que integran el zapato y demás accesorios 
+              No aplica garantía: Ruptura de materiales, partes que integran el zapato y demás accesorios
               ocasionados por mal uso.
               <br></br>
               Para cambio, los zapatos deben de estar en perfectas condiciones de higiene.
@@ -193,7 +195,7 @@ function DetallesCalzado() {
           </Col>
         </Row>
       </Container>
-      <h1 style={{ margin:'10px',  textAlign: 'center'}}>Calzado Destacado</h1>
+      <h1 style={{ margin: '10px', textAlign: 'center' }}>Calzado Destacado</h1>
       <Destacados />
     </div>
   );
