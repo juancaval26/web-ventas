@@ -4,7 +4,7 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/storage';
 import 'firebase/compat/firestore';
 import FirebaseConfig from './FirebaseConfig';
-import { Modal, Button, Form } from 'react-bootstrap';
+import { Modal, Button, Form, Spinner } from 'react-bootstrap';
 import CrearProducto from './CrearProductos';
 import { handleImageChange } from './Utilidades'; // Importa la función
 import Buscador from './Buscador';
@@ -235,6 +235,7 @@ function ListarProductos() {
                 onChange={(e) => handleImageChange(e, productoEditado, setProductoEditado, setLoading)} // Usa la función aquí
                 name="imagen"
               />
+              {loading && <Spinner animation="border" />}
               {productoEditado?.imagenUrls.map((imageUrl, index) => (
                 <div key={index}>
                   <img src={imageUrl} alt={`Imagen ${index}`} style={{ width: '20%', marginTop: '15px', marginBottom: '10px', margin: '3px' }} />

@@ -20,15 +20,19 @@ function CrearProducto({ ProductoCreado }) {
     nombre: '',
     referencia: '',
     marca: '',
-    talla: '',
+    tallas: {
+      Mujer: '36-39',
+      Hombre: '40-44'
+    },
     precio: '',
     descripcion: '',
-    genero: '',
+    genero: ["Hombre", "Mujer"],
     tipo: 'Replica AAA',
     fecha: fecha,
     imagenUrls: [],
   });
   const [loading, setLoading] = useState(false);  // Estado del spinner
+  const [generoSeleccionado, setGeneroSeleccionado] = useState("Hombre");  // Estado del género seleccionado
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -38,23 +42,32 @@ function CrearProducto({ ProductoCreado }) {
     }));
   };
 
+  const GeneroChange = (e) => {
+    const { value } = e.target;
+    setGeneroSeleccionado(value);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const productoConImagenes = { ...nuevoProducto };
+      const productoConImagenes = { ...nuevoProducto, talla: nuevoProducto.tallas[generoSeleccionado] };
       await db.collection('producto').add(productoConImagenes);
       alert('Producto creado exitosamente');
 
       ProductoCreado(productoConImagenes);
 
+      //limpiar campos
       setNuevoProducto({
         nombre: '',
         referencia: '',
-        marca: '',
-        talla: '',
+        marca: "",
+        tallas: {
+          Mujer: '36-39',
+          Hombre: '40-44'
+        },
         precio: '',
         descripcion: '',
-        genero: '',
+        genero: ["Hombre", "Mujer"],
         tipo: 'Replica AAA',
         fecha: fecha,
         imagenUrls: [],
@@ -84,7 +97,7 @@ function CrearProducto({ ProductoCreado }) {
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
-          <Form.Group controlId="formReferencia">
+            <Form.Group controlId="formReferencia">
               <Form.Label>Nombre</Form.Label>
               <Form.Control type="text" name="nombre" value={nuevoProducto.nombre} onChange={handleChange} placeholder='Nombre'/>
             </Form.Group>
@@ -96,9 +109,17 @@ function CrearProducto({ ProductoCreado }) {
               <Form.Label>Marca</Form.Label>
               <Form.Control type="text" name="marca" value={nuevoProducto.marca} onChange={handleChange} placeholder='Marca'/>
             </Form.Group>
+            <Form.Group controlId="formGenero">
+              <Form.Label>Género</Form.Label>
+              <Form.Select name="genero" value={generoSeleccionado} onChange={GeneroChange}>
+                {nuevoProducto.genero.map((generos, index) => (
+                  <option key={index} value={generos}>{generos}</option>
+                ))}
+              </Form.Select>
+            </Form.Group>
             <Form.Group controlId="formTalla">
               <Form.Label>Talla</Form.Label>
-              <Form.Control type="text" name="talla" value={nuevoProducto.talla} onChange={handleChange} placeholder='Talla'/>
+              <Form.Control type="text" name="talla" value={nuevoProducto.tallas[generoSeleccionado]} readOnly placeholder='Talla'/>
             </Form.Group>
             <Form.Group controlId="formPrecio">
               <Form.Label>Precio</Form.Label>
@@ -116,10 +137,6 @@ function CrearProducto({ ProductoCreado }) {
                 }
                 onChange={handleChange}
               />
-            </Form.Group>
-            <Form.Group controlId="formReGenero">
-              <Form.Label>Género</Form.Label>
-              <Form.Control type="text" name="genero" value={nuevoProducto.genero} onChange={handleChange} placeholder='Genero'/>
             </Form.Group>
             <Form.Group controlId="formImagen">
               <Form.Label>Imagen</Form.Label>
