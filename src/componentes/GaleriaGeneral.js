@@ -9,7 +9,9 @@ function GaleriaGeneral() {
   const [productosPorMarca, setProductosPorMarca] = useState({});
   const [productosFiltrados, setProductosFiltrados] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
+  const [imagenActual, setImagenActual] = useState('');
   const productsPerPage = 30; // Define la cantidad de productos por página
+  const [isMobile, setIsMobile] = useState(false);
 
   // Calcula el índice inicial y final de los productos a mostrar
   const indexOfLastProduct = currentPage * productsPerPage;
@@ -34,6 +36,18 @@ function GaleriaGeneral() {
     };
 
     fetchProductos();
+
+    // Detectar si el dispositivo es móvil
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768); // Cambiar a 768 o al ancho que necesites para considerar como móvil
+    };
+
+    handleResize(); // Llamar al método una vez para establecer el estado inicial
+    window.addEventListener('resize', handleResize); // Escuchar cambios en el tamaño de la ventana
+
+    return () => {
+      window.removeEventListener('resize', handleResize); // Limpiar el listener en la fase de desmontaje
+    };
   }, []);
 
   useEffect(() => {
@@ -79,9 +93,14 @@ function GaleriaGeneral() {
     }
   };
 
+  const cambiarImagen = (id, rutaImagen) => {
+    document.getElementById(id).src = rutaImagen;
+    setImagenActual(rutaImagen);
+  };
+
   // Obtener todos los productos en un solo array
   const allProductos = Object.keys(productosFiltrados).reduce((acc, marca) => acc.concat(productosFiltrados[marca]), []);
-  
+
   return (
     <Container fluid>
       <Row>
@@ -95,19 +114,28 @@ function GaleriaGeneral() {
               <Col key={idx} xs={6} sm={6} md={4} lg={3}>
                 <Card style={{ marginBottom: '10px' }}>
                   <Link to={`/DetallesCalzado/${producto.referencia}`} onClick={() => handleImageClick(producto)}>
-                    <Card.Img variant="top" src={producto.imagenUrls[0]} style={{ height: '180px', objectFit: 'cover', borderRadius: '10px 10px 0 0' }} />
+                    <Card.Img variant="top" id={`imagenGrande-${idx}`} src={producto.imagenUrls[0]} style={{ height: '180px', objectFit: 'cover', borderRadius: '10px 10px 0 0' }} />
                   </Link>
                   <Card.Body>
                     <Card.Title>
-                      {producto.marca.charAt(0).toUpperCase() + producto.marca.slice(1)}
+                      {producto.marca.toUpperCase()}
                     </Card.Title>
                     <Card.Text>
                       <strong>Precio:</strong> {producto.precio}<br />
+                      <strong>Genero:</strong> {producto.genero}<br />
                       <strong>Envío Gratis</strong>
                     </Card.Text>
-                    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+                    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', marginTop: '5px', marginLeft:'10%' }}>
                       {producto.imagenUrls.map((imagen, index) => (
-                        <img key={index} src={imagen} alt={`Miniatura ${index}`} style={{ width: '24px', height: '24px', marginRight: '5px', borderRadius: '5px' }} />
+                        <Col key={`Miniatura-${idx}-${index}`} xs="auto" className="p-0">
+                          <label className='form-control m-1 p-1'>
+                            <img key={index} src={imagen} alt={`Miniatura ${index}`}
+                              onClick={() => cambiarImagen(`imagenGrande-${idx}`, imagen)}
+                              onMouseMove={!isMobile ? () => cambiarImagen(`imagenGrande-${idx}`, imagen) : null}
+                              style={{ width: '30px', height: '30px', cursor: 'pointer', borderRadius: '5px' }}
+                            />
+                          </label>
+                        </Col>
                       ))}
                     </div>
                   </Card.Body>

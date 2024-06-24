@@ -91,7 +91,7 @@ function DetallesCalzado() {
               </Col>
             </Row>
             {/* Imágenes pequeñas */}
-            <Row style={{ marginTop: '5px', marginLeft:'10%' }}>
+            <Row style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', marginTop: '5px', marginLeft:'10%' }}>
               {productosFiltrados.map((producto, index) => (
                 producto.imagenUrls.map((url, idx) => (
                   <Col key={`${index}-${idx}`} xs="auto" className="p-0">
