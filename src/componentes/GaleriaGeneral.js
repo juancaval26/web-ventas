@@ -114,7 +114,7 @@ function GaleriaGeneral() {
               <Col key={idx} xs={6} sm={6} md={4} lg={3}>
                 <Card style={{ marginBottom: '10px' }}>
                   <Link to={`/DetallesCalzado/${producto.referencia}`} onClick={() => handleImageClick(producto)}>
-                    <Card.Img variant="top" id={`imagenGrande-${idx}`} src={producto.imagenUrls[0]} style={{ height: '180px', objectFit: 'cover', borderRadius: '10px 10px 0 0' }} />
+                    <Card.Img variant="top" id={`imagenGrande-${idx}`} src={producto.imagenUrls[0]} style={{ height: '301px', borderRadius: '10px' }} />
                   </Link>
                   <Card.Body>
                     <Card.Title>
@@ -125,6 +125,7 @@ function GaleriaGeneral() {
                       <strong>Genero:</strong> {producto.genero}<br />
                       <strong>Envío Gratis</strong>
                     </Card.Text>
+                    {/* miniaturas */}
                     <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', marginTop: '5px', marginLeft:'10%' }}>
                       {producto.imagenUrls.map((imagen, index) => (
                         <Col key={`Miniatura-${idx}-${index}`} xs="auto" className="p-0">

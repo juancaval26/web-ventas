@@ -11,7 +11,8 @@ function CalzadoGenero() {
   const [productosFiltrados, setProductosFiltrados] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 10; // Define la cantidad de productos por página
-
+  const [isMobile, setIsMobile] = useState(false);
+  const [imagenActual, setImagenActual] = useState('');
   // Calcula el índice inicial y final de los productos a mostrar
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
@@ -35,6 +36,18 @@ function CalzadoGenero() {
     };
 
     fetchProductos();
+
+        // Detectar si el dispositivo es móvil
+        const handleResize = () => {
+          setIsMobile(window.innerWidth < 768); // Cambiar a 768 o al ancho que necesites para considerar como móvil
+        };
+    
+        handleResize(); // Llamar al método una vez para establecer el estado inicial
+        window.addEventListener('resize', handleResize); // Escuchar cambios en el tamaño de la ventana
+    
+        return () => {
+          window.removeEventListener('resize', handleResize); // Limpiar el listener en la fase de desmontaje
+        };
   }, [genero]);
 
   useEffect(() => {
@@ -80,6 +93,13 @@ function CalzadoGenero() {
     }
   };
 
+  const cambiarImagen = (id, rutaImagen) => {
+    document.getElementById(id).src = rutaImagen;
+    setImagenActual(rutaImagen);
+  };
+
+  const allProductos = Object.keys(productosFiltrados).reduce((acc, genero) => acc.concat(productosFiltrados[genero]), []);
+
   return (
     <Container fluid>
       <Row>
@@ -88,14 +108,12 @@ function CalzadoGenero() {
         <Col lg={10} md={9} sm={7} style={{ marginLeft: 'auto', marginRight: '80px', marginTop: '40px' }}>
           {/* Agrega el buscador */}
           <Buscador onBuscar={handleBuscar} />
-          {Object.keys(productosFiltrados).map((marca, index) => (
-            <div key={index}>
               <Row>
-                {productosFiltrados[marca].slice(indexOfFirstProduct, indexOfLastProduct).map((producto, idx) => (
+                {allProductos.slice(indexOfFirstProduct, indexOfLastProduct).map((producto, idx) => (
                   <Col key={idx} xs={6} sm={6} md={4} lg={3}>
                     <Card style={{ marginBottom: '10px' }}>
                       <Link to={`/DetallesCalzado/${producto.referencia}`} onClick={() => handleImageClick(producto)}>
-                        <Card.Img variant="top" src={producto.imagenUrls[0]} style={{ height: '180px', objectFit: 'cover', borderRadius: '10px 10px 0 0' }} />
+                        <Card.Img variant="top" id={`imagenGrande-${idx}`} src={producto.imagenUrls[0]} style={{ height: '180px', objectFit: 'cover', borderRadius: '10px 10px 0 0' }} />
                       </Link>
                       <Card.Body>
                         <Card.Title>
@@ -103,20 +121,32 @@ function CalzadoGenero() {
                         </Card.Title>
                         <Card.Text>
                           <strong>Precio:</strong> {producto.precio}<br />
+                          <strong>Genero:</strong> {producto.genero}<br />
                           <strong>Envío Gratis</strong>
                         </Card.Text>
-                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', marginTop: '5px', marginLeft:'10%' }}>
+                      {producto.imagenUrls.map((imagen, index) => (
+                        <Col key={`Miniatura-${idx}-${index}`} xs="auto" className="p-0">
+                          <label className='form-control m-1 p-1'>
+                            <img key={index} src={imagen} alt={`Miniatura ${index}`}
+                              onClick={() => cambiarImagen(`imagenGrande-${idx}`, imagen)}
+                              onMouseMove={!isMobile ? () => cambiarImagen(`imagenGrande-${idx}`, imagen) : null}
+                              style={{ width: '30px', height: '30px', cursor: 'pointer', borderRadius: '5px' }}
+                            />
+                          </label>
+                        </Col>
+                      ))}
+                    </div>
+                        {/* <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
                           {producto.imagenUrls.map((imagen, index) => (
                             <img key={index} src={imagen} alt={`Miniatura ${index}`} style={{ width: '24px', height: '24px', marginRight: '5px', borderRadius: '5px' }} />
                           ))}
-                        </div>
+                        </div> */}
                       </Card.Body>
                     </Card>
                   </Col>
                 ))}
               </Row>
-            </div>
-          ))}
           {/* Agrega el paginador */}
           <Pagination style={{ justifyContent: 'center' }}>
             {Array.from({ length: Math.ceil(Object.keys(productosFiltrados).reduce((acc, marca) => acc.concat(productosFiltrados[marca]), []).length / productsPerPage) }).map((_, index) => (

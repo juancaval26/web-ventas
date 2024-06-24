@@ -5,7 +5,6 @@ import 'firebase/compat/storage';
 import 'firebase/compat/firestore';
 import FirebaseConfig from './FirebaseConfig';
 import { Modal, Button, Form, Spinner } from 'react-bootstrap';
-import CrearProducto from './CrearProductos';
 import { handleImageChange } from './Utilidades'; // Importa la función
 import Buscador from './Buscador';
 
