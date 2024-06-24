@@ -4,6 +4,8 @@ import { Container, Row, Col, Card, Pagination } from 'react-bootstrap';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import Buscador from "./Buscador"; 
+import Footer from './Footer';
+
 
 function CalzadoGenero() {
   const { genero } = useParams();
@@ -87,7 +89,7 @@ function CalzadoGenero() {
       await productoRef.update({
         clickCount: firebase.firestore.FieldValue.increment(1)
       });
-        alert(`Incremented click count for product ${producto.referencia}`);
+        // alert(`Incremented click count for product ${producto.referencia}`);
     } catch (error) {
         alert('Error incrementing click count:', error);
     }
@@ -113,7 +115,7 @@ function CalzadoGenero() {
                   <Col key={idx} xs={6} sm={6} md={4} lg={3}>
                     <Card style={{ marginBottom: '10px' }}>
                       <Link to={`/DetallesCalzado/${producto.referencia}`} onClick={() => handleImageClick(producto)}>
-                        <Card.Img variant="top" id={`imagenGrande-${idx}`} src={producto.imagenUrls[0]} style={{ height: '180px', objectFit: 'cover', borderRadius: '10px 10px 0 0' }} />
+                        <Card.Img variant="top" id={`imagenGrande-${idx}`} src={producto.imagenUrls[0]} style={{ height: '301px', borderRadius: '10px' }} />
                       </Link>
                       <Card.Body>
                         <Card.Title>
@@ -157,6 +159,7 @@ function CalzadoGenero() {
           </Pagination>
         </Col>
       </Row>
+      <Footer />
     </Container>
   );
 }

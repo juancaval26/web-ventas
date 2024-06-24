@@ -10,8 +10,11 @@ function GaleriaGeneral({ rutaImagenes }) {
   const [productosPorMarca, setProductosPorMarca] = useState({});
   const [productosFiltrados, setProductosFiltrados] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 10; // Define la cantidad de productos por página
+  
+  // Define la cantidad de productos por página
+  const productsPerPage = 30; 
   const [searchTerm, setSearchTerm] = useState('');
+
   // Calcula el índice inicial y final de los productos a mostrar
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
@@ -66,6 +69,8 @@ function GaleriaGeneral({ rutaImagenes }) {
     setProductosFiltrados(productosFiltrados);
   };
 
+  const allProductos = Object.keys(productosFiltrados).reduce((acc, marca) => acc.concat(productosFiltrados[marca]), []);
+
   return (
     <Container fluid>
     <Row>
@@ -75,17 +80,17 @@ function GaleriaGeneral({ rutaImagenes }) {
         {/* Agrega el buscador */}
         <Buscador onBuscar={handleBuscar} />
         {Object.keys(productosFiltrados).length > 0 ? (
-          Object.keys(productosFiltrados).map((marca, index) => (
-            <div key={index}>
+          // Object.keys(productosFiltrados).map((marca, index) => (
+            <div>
               <Row>
-                {productosFiltrados[marca].slice(indexOfFirstProduct, indexOfLastProduct).map((producto, idx) => (
+                {allProductos.slice(indexOfFirstProduct, indexOfLastProduct).map((producto, idx) => (
                   <Col key={idx} xs={12} sm={6} md={4} lg={3}>
                     <Card style={{ marginBottom: '10px' }}>
                       <Link to={`/DetallesCalzado/${producto.referencia}`}>
                         <Card.Img variant="top" src={producto.imagenUrls[0]} style={{ height: '180px', objectFit: 'cover', borderRadius: '10px 10px 0 0' }} />
                       </Link>
                       <Card.Body>
-                        <Card.Title>{producto.referencia}</Card.Title>
+                        <Card.Title>{producto.referencia.toUpperCase()}</Card.Title>
                         <Card.Text>
                           <strong>Talla:</strong> {producto.talla}<br />
                           <strong>Precio:</strong> {producto.precio}<br />
@@ -103,18 +108,18 @@ function GaleriaGeneral({ rutaImagenes }) {
                 ))}
               </Row>
             </div>
-          ))
+          // ))
         ) : (
           <div>No se encontraron resultados</div>
         )}
         {/* Agrega el paginador */}
         <Pagination style={{ justifyContent: 'center' }}>
-          {Array.from({ length: Math.ceil(Object.keys(productosFiltrados).reduce((acc, marca) => acc.concat(productosFiltrados[marca]), []).length / productsPerPage) }).map((_, index) => (
-            <Pagination.Item key={index} onClick={() => paginate(index + 1)} active={index + 1 === currentPage}>
-              {index + 1}
-            </Pagination.Item>
-          ))}
-        </Pagination>
+            {Array.from({ length: Math.ceil(allProductos.length / productsPerPage) }).map((_, index) => (
+              <Pagination.Item key={index} onClick={() => paginate(index + 1)} active={index + 1 === currentPage}>
+                {index + 1}
+              </Pagination.Item>
+            ))}
+          </Pagination>
       </Col>
     </Row>
     <Footer />

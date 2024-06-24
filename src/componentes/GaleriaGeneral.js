@@ -117,9 +117,7 @@ function GaleriaGeneral() {
                     <Card.Img variant="top" id={`imagenGrande-${idx}`} src={producto.imagenUrls[0]} style={{ height: '301px', borderRadius: '10px' }} />
                   </Link>
                   <Card.Body>
-                    <Card.Title>
-                      {producto.marca.toUpperCase()}
-                    </Card.Title>
+                    <Card.Title>{producto.referencia.toUpperCase()}</Card.Title>
                     <Card.Text>
                       <strong>Precio:</strong> {producto.precio}<br />
                       <strong>Genero:</strong> {producto.genero}<br />
