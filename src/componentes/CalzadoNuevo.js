@@ -77,11 +77,8 @@ function GaleriaGeneral({ rutaImagenes }) {
       <Col lg={2} md={3} sm={5} className="position-fixed" style={{ marginTop: '50px' }}>
       </Col>
       <Col lg={10} md={9} sm={7} style={{ marginLeft: 'auto', marginRight: 'auto', marginRight: '80px', marginTop: '40px' }}>
-        {/* Agrega el buscador */}
+        {/* buscador */}
         <Buscador onBuscar={handleBuscar} />
-        {Object.keys(productosFiltrados).length > 0 ? (
-          // Object.keys(productosFiltrados).map((marca, index) => (
-            <div>
               <Row>
                 {allProductos.slice(indexOfFirstProduct, indexOfLastProduct).map((producto, idx) => (
                   <Col key={idx} xs={12} sm={6} md={4} lg={3}>
@@ -107,11 +104,6 @@ function GaleriaGeneral({ rutaImagenes }) {
                   </Col>
                 ))}
               </Row>
-            </div>
-          // ))
-        ) : (
-          <div>No se encontraron resultados</div>
-        )}
         {/* Agrega el paginador */}
         <Pagination style={{ justifyContent: 'center' }}>
             {Array.from({ length: Math.ceil(allProductos.length / productsPerPage) }).map((_, index) => (

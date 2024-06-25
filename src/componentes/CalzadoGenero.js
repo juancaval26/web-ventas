@@ -119,7 +119,7 @@ function CalzadoGenero() {
                       </Link>
                       <Card.Body>
                         <Card.Title>
-                          {producto.marca.charAt(0).toUpperCase() + producto.marca.slice(1)}
+                          {producto.referencia.toUpperCase()}
                         </Card.Title>
                         <Card.Text>
                           <strong>Precio:</strong> {producto.precio}<br />
