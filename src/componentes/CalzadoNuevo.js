@@ -10,6 +10,9 @@ function GaleriaGeneral({ rutaImagenes }) {
   const [productosPorMarca, setProductosPorMarca] = useState({});
   const [productosFiltrados, setProductosFiltrados] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
+  const [imagenActual, setImagenActual] = useState('');
+  const [isMobile, setIsMobile] = useState(false);
+
   
   // Define la cantidad de productos por página
   const productsPerPage = 30; 
@@ -35,6 +38,18 @@ function GaleriaGeneral({ rutaImagenes }) {
     };
 
     fetchProductos();
+
+        // Detectar si el dispositivo es móvil
+        const handleResize = () => {
+          setIsMobile(window.innerWidth < 768); // Cambiar a 768 o al ancho que necesites para considerar como móvil
+        };
+    
+        handleResize(); // Llamar al método una vez para establecer el estado inicial
+        window.addEventListener('resize', handleResize); // Escuchar cambios en el tamaño de la ventana
+    
+        return () => {
+          window.removeEventListener('resize', handleResize); // Limpiar el listener en la fase de desmontaje
+        };
   }, []);
 
 
@@ -69,6 +84,11 @@ function GaleriaGeneral({ rutaImagenes }) {
     setProductosFiltrados(productosFiltrados);
   };
 
+  const cambiarImagen = (id, rutaImagen) => {
+    document.getElementById(id).src = rutaImagen;
+    setImagenActual(rutaImagen);
+  };
+
   const allProductos = Object.keys(productosFiltrados).reduce((acc, marca) => acc.concat(productosFiltrados[marca]), []);
 
   return (
@@ -76,7 +96,7 @@ function GaleriaGeneral({ rutaImagenes }) {
     <Row>
       <Col lg={2} md={3} sm={5} className="position-fixed" style={{ marginTop: '50px' }}>
       </Col>
-      <Col lg={10} md={9} sm={7} style={{ marginLeft: 'auto', marginRight: 'auto', marginRight: '80px', marginTop: '40px' }}>
+      <Col lg={10} md={9} sm={7} style={{ marginLeft: 'auto', marginRight: '80px', marginTop: '40px' }}>
         {/* buscador */}
         <Buscador onBuscar={handleBuscar} />
               <Row>
@@ -84,7 +104,7 @@ function GaleriaGeneral({ rutaImagenes }) {
                   <Col key={idx} xs={12} sm={6} md={4} lg={3}>
                     <Card style={{ marginBottom: '10px' }}>
                       <Link to={`/DetallesCalzado/${producto.referencia}`}>
-                        <Card.Img variant="top" src={producto.imagenUrls[0]} style={{ height: '180px', objectFit: 'cover', borderRadius: '10px 10px 0 0' }} />
+                        <Card.Img variant="top" id={`imagenGrande-${idx}`} src={producto.imagenUrls[0]} style={{ height: '301px', borderRadius: '10px' }} />
                       </Link>
                       <Card.Body>
                         <Card.Title>{producto.referencia.toUpperCase()}</Card.Title>
@@ -92,11 +112,19 @@ function GaleriaGeneral({ rutaImagenes }) {
                           <strong>Talla:</strong> {producto.talla}<br />
                           <strong>Precio:</strong> {producto.precio}<br />
                           <strong>Colores:</strong> {producto.color}<br />
-                          <div>
-                            {producto.imagenUrls.map((imagen, index) => (
-                              <img key={index} src={imagen} alt={`Miniatura ${index}`} style={{ width: '24px', height: '24px', marginRight: '5px', borderRadius: '5px' }} />
-                            ))}
-                          </div>
+                          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+                      {producto.imagenUrls.map((imagen, index) => (
+                        <Col key={`Miniatura-${idx}-${index}`} xs="auto" className="p-0">
+                          <label className='form-control p-1'>
+                            <img key={index} src={imagen} alt={`Miniatura ${index}`} title='Puedes cambiar la imagen, pasando el mouse/click'
+                              onClick={() => cambiarImagen(`imagenGrande-${idx}`, imagen)}
+                              onMouseMove={!isMobile ? () => cambiarImagen(`imagenGrande-${idx}`, imagen) : null}
+                              style={{ height: '33px', cursor: 'pointer', borderRadius: '5px' }}
+                            />
+                          </label>
+                        </Col>
+                      ))}
+                    </div>
                           <strong>Envío Gratis</strong>
                         </Card.Text>
                       </Card.Body>

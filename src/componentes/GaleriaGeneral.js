@@ -124,14 +124,14 @@ function GaleriaGeneral() {
                       <strong>Envío Gratis</strong>
                     </Card.Text>
                     {/* miniaturas */}
-                    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', marginTop: '5px', marginLeft:'10%' }}>
+                    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
                       {producto.imagenUrls.map((imagen, index) => (
                         <Col key={`Miniatura-${idx}-${index}`} xs="auto" className="p-0">
-                          <label className='form-control m-1 p-1'>
-                            <img key={index} src={imagen} alt={`Miniatura ${index}`}
+                          <label className='form-control p-1'>
+                            <img key={index} src={imagen} alt={`Miniatura ${index}`} title='Puedes cambiar la imagen, pasando el mouse/click'
                               onClick={() => cambiarImagen(`imagenGrande-${idx}`, imagen)}
                               onMouseMove={!isMobile ? () => cambiarImagen(`imagenGrande-${idx}`, imagen) : null}
-                              style={{ width: '30px', height: '30px', cursor: 'pointer', borderRadius: '5px' }}
+                              style={{ height: '33px', cursor: 'pointer', borderRadius: '5px' }}
                             />
                           </label>
                         </Col>

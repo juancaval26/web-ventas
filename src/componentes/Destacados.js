@@ -28,13 +28,14 @@ function Destacados() {
         <Col>
           <Row>
             {productosDestacados.map((producto, index) => (
-              <Col key={index} xs={6} sm={4} md={3} lg={2}>
+              <Col key={index} xs={6} sm={6} md={4} lg={3}>
                 <Card style={{ marginBottom: '10px' }}>
-                  <Card.Img variant="top" src={producto.imagenUrls[0]} style={{ height: '180px', objectFit: 'cover', borderRadius: '10px 10px 0 0' }} />
+                  <Card.Img variant="top" src={producto.imagenUrls[0]} style={{ height: '301px', borderRadius: '10px' }} />
                   <Card.Body>
-                    <Card.Title>{producto.marca.charAt(0).toUpperCase() + producto.marca.slice(1)}</Card.Title>
+                    <Card.Title>{producto.referencia.toUpperCase()}</Card.Title>
                     <Card.Text>
                       <strong>Precio:</strong> {producto.precio}<br />
+                      <strong>Genero:</strong> {producto.genero}<br />
                       <strong>Envío Gratis</strong>
                     </Card.Text>
                   </Card.Body>
