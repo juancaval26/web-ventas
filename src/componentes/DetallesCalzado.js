@@ -91,17 +91,17 @@ function DetallesCalzado() {
               </Col>
             </Row>
             {/* Imágenes pequeñas */}
-            <Row style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', marginTop: '5px', marginLeft:'10%' }}>
+            <Row style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', marginTop: '5px' }}>
               {productosFiltrados.map((producto, index) => (
                 producto.imagenUrls.map((url, idx) => (
-                  <Col key={`${index}-${idx}`} xs="auto" className="p-0">
-                    <label className='form-control m-1 p-1'>
+                  <Col key={`${index}-${idx}`} xs="auto" className="p-1">
+                    <label className='form-control p-0'>
                       <Image
                         src={url}
                         onClick={() => cambiarImagen(url)}
                         onMouseMove={!isMobile ? () => cambiarImagen(url) : null}
-                        alt={`Imagen ${index}-${idx}`}
-                        style={{ width: '50px', height: '50px', cursor: 'pointer', borderRadius: '10px' }}
+                        alt={`Imagen ${index}-${idx}`} title='Puedes cambiar la imagen, pasando el mouse/click'
+                        style={{ height: '50px', cursor: 'pointer', borderRadius: '5px' }}
                       />
                     </label>
                   </Col>
@@ -114,9 +114,9 @@ function DetallesCalzado() {
           <Col xs={12} lg={6} sm={6} className='justify-content-center align-items-center'>
             <h3 className=''>Detalles</h3>
             {productosFiltrados.map((producto, index) => (
-              <Card key={index} style={{ marginBottom: '10px' }} >
+              <div key={index} style={{ marginBottom: '10px' }} >
                 <Card.Body>
-                  <Card.Title>{producto.nombre}</Card.Title>
+                  <Card.Title>{producto.nombre.toUpperCase()}</Card.Title>
                   <Card.Text>
                     <strong>Precio:</strong> {producto.precio}<br />
                     <strong>Color:</strong> Variado<br />
@@ -130,7 +130,7 @@ function DetallesCalzado() {
                     </a>
                   </Card.Text>
                 </Card.Body>
-              </Card>
+              </div>
             ))}
           </Col>
         </Row>
@@ -142,18 +142,14 @@ function DetallesCalzado() {
           <Col xs={12} md={12} style={{ marginTop: '40px' }}>
             <hr />
             <h2>Descripción</h2>
-            <label>
+            <label className=''>
               BIENVENIDO A LA TIENDA OFICIAL DE DIAMOND MARKET
               <br></br>
               <br></br>
               {productosFiltrados.map((producto, index) => (
-                <Card key={index} style={{ marginBottom: '10px' }} >
-                  <Card.Body>
-                    <Card.Text>
-                      <strong></strong> {producto.descripcion}<br />
-                    </Card.Text>
-                  </Card.Body>
-                </Card>
+                <div key={index} style={{ marginBottom: '10px' }} >
+                  <strong></strong> {producto.descripcion}<br />
+                </div>
               ))}
               Material Interno: Textil <br />
               Tipo de Plantilla: Fija <br />

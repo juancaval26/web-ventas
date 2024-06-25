@@ -29,7 +29,7 @@ function Destacados() {
           <Row>
             {productosDestacados.map((producto, index) => (
               <Col key={index} xs={6} sm={6} md={4} lg={3}>
-                <Card style={{ marginBottom: '10px' }}>
+                <div style={{ marginBottom: '15px' }}>
                   <Card.Img variant="top" src={producto.imagenUrls[0]} style={{ height: '301px', borderRadius: '10px' }} />
                   <Card.Body>
                     <Card.Title>{producto.referencia.toUpperCase()}</Card.Title>
@@ -39,7 +39,7 @@ function Destacados() {
                       <strong>Envío Gratis</strong>
                     </Card.Text>
                   </Card.Body>
-                </Card>
+                </div>
               </Col>
             ))}
           </Row>

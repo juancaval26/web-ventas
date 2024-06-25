@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { Container, Row, Col, Card, Pagination } from 'react-bootstrap';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
-import Buscador from "./Buscador"; 
+import Buscador from "./Buscador";
 import Footer from './Footer';
 
 
@@ -39,17 +39,17 @@ function CalzadoGenero() {
 
     fetchProductos();
 
-        // Detectar si el dispositivo es móvil
-        const handleResize = () => {
-          setIsMobile(window.innerWidth < 768); // Cambiar a 768 o al ancho que necesites para considerar como móvil
-        };
-    
-        handleResize(); // Llamar al método una vez para establecer el estado inicial
-        window.addEventListener('resize', handleResize); // Escuchar cambios en el tamaño de la ventana
-    
-        return () => {
-          window.removeEventListener('resize', handleResize); // Limpiar el listener en la fase de desmontaje
-        };
+    // Detectar si el dispositivo es móvil
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768); // Cambiar a 768 o al ancho que necesites para considerar como móvil
+    };
+
+    handleResize(); // Llamar al método una vez para establecer el estado inicial
+    window.addEventListener('resize', handleResize); // Escuchar cambios en el tamaño de la ventana
+
+    return () => {
+      window.removeEventListener('resize', handleResize); // Limpiar el listener en la fase de desmontaje
+    };
   }, [genero]);
 
   useEffect(() => {
@@ -84,14 +84,14 @@ function CalzadoGenero() {
   const handleImageClick = async (producto) => {
     const db = firebase.firestore();
     const productoRef = db.collection('producto').doc(producto.id);
-    
+
     try {
       await productoRef.update({
         clickCount: firebase.firestore.FieldValue.increment(1)
       });
-        // alert(`Incremented click count for product ${producto.referencia}`);
+      // alert(`Incremented click count for product ${producto.referencia}`);
     } catch (error) {
-        alert('Error incrementing click count:', error);
+      alert('Error incrementing click count:', error);
     }
   };
 
@@ -110,45 +110,40 @@ function CalzadoGenero() {
         <Col lg={10} md={9} sm={7} style={{ marginLeft: 'auto', marginRight: '80px', marginTop: '40px' }}>
           {/* Agrega el buscador */}
           <Buscador onBuscar={handleBuscar} />
-              <Row>
-                {allProductos.slice(indexOfFirstProduct, indexOfLastProduct).map((producto, idx) => (
-                  <Col key={idx} xs={6} sm={6} md={4} lg={3}>
-                    <Card style={{ marginBottom: '10px' }}>
-                      <Link to={`/DetallesCalzado/${producto.referencia}`} onClick={() => handleImageClick(producto)}>
-                        <Card.Img variant="top" id={`imagenGrande-${idx}`} src={producto.imagenUrls[0]} style={{ height: '301px', borderRadius: '10px' }} />
-                      </Link>
-                      <Card.Body>
-                        <Card.Title>
-                          {producto.referencia.toUpperCase()}
-                        </Card.Title>
-                        <Card.Text>
-                          <strong>Precio:</strong> {producto.precio}<br />
-                          <strong>Genero:</strong> {producto.genero}<br />
-                          <strong>Envío Gratis</strong>
-                        </Card.Text>
-                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', marginTop: '5px', marginLeft:'10%' }}>
+          <Row>
+            {allProductos.slice(indexOfFirstProduct, indexOfLastProduct).map((producto, idx) => (
+              <Col key={idx} xs={6} sm={4} md={4} lg={3}>
+                <div style={{ marginBottom: '15px' }}>
+                  <Link to={`/DetallesCalzado/${producto.referencia}`} onClick={() => handleImageClick(producto)}>
+                    <Card.Img variant="top" id={`imagenGrande-${idx}`} src={producto.imagenUrls[0]} style={{ height: '301px', borderRadius: '10px' }} />
+                  </Link>
+                  <Card.Body>
+                    <Card.Title>
+                      {producto.referencia.toUpperCase()}
+                    </Card.Title>
+                    <Card.Text>
+                      <strong>Precio:</strong> {producto.precio}<br />
+                      <strong>Genero:</strong> {producto.genero}<br />
+                      <strong>Envío Gratis</strong>
+                    </Card.Text>
+                    <Row style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', marginTop: '5px' }}>
                       {producto.imagenUrls.map((imagen, index) => (
-                        <Col key={`Miniatura-${idx}-${index}`} xs="auto" className="p-0">
-                          <label className='form-control m-1 p-1'>
-                            <img key={index} src={imagen} alt={`Miniatura ${index}`}
+                        <Col key={`Miniatura-${idx}-${index}`} xs="auto" className="p-1">
+                          <label className='form-control p-0'>
+                            <img key={index} src={imagen} alt={`Miniatura ${index}`} title='Puedes cambiar la imagen, pasando el mouse/click'
                               onClick={() => cambiarImagen(`imagenGrande-${idx}`, imagen)}
                               onMouseMove={!isMobile ? () => cambiarImagen(`imagenGrande-${idx}`, imagen) : null}
-                              style={{ width: '30px', height: '30px', cursor: 'pointer', borderRadius: '5px' }}
+                              style={{ height: '33px', cursor: 'pointer', borderRadius: '5px' }}
                             />
                           </label>
                         </Col>
                       ))}
-                    </div>
-                        {/* <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-                          {producto.imagenUrls.map((imagen, index) => (
-                            <img key={index} src={imagen} alt={`Miniatura ${index}`} style={{ width: '24px', height: '24px', marginRight: '5px', borderRadius: '5px' }} />
-                          ))}
-                        </div> */}
-                      </Card.Body>
-                    </Card>
-                  </Col>
-                ))}
-              </Row>
+                    </Row>
+                  </Card.Body>
+                </div>
+              </Col>
+            ))}
+          </Row>
           {/* Agrega el paginador */}
           <Pagination style={{ justifyContent: 'center' }}>
             {Array.from({ length: Math.ceil(Object.keys(productosFiltrados).reduce((acc, marca) => acc.concat(productosFiltrados[marca]), []).length / productsPerPage) }).map((_, index) => (

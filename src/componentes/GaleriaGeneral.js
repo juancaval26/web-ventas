@@ -106,13 +106,13 @@ function GaleriaGeneral() {
       <Row>
         <Col lg={2} md={3} sm={5} className="position-fixed" style={{ marginTop: '50px' }}>
         </Col>
-        <Col lg={10} md={9} sm={7} style={{ marginLeft: 'auto', marginRight: '80px', marginTop: '40px' }}>
+        <Col lg={10} md={9} sm={7} style={{ marginLeft: 'auto', marginRight: 'auto', marginTop: '50px' }}>
           {/* Agrega el buscador */}
           <Buscador onBuscar={handleBuscar} />
           <Row>
             {allProductos.slice(indexOfFirstProduct, indexOfLastProduct).map((producto, idx) => (
-              <Col key={idx} xs={6} sm={6} md={4} lg={3}>
-                <Card style={{ marginBottom: '10px' }}>
+              <Col key={idx} xs={6} sm={4} md={4} lg={3}>
+                <div style={{ marginBottom: '15px' }}>
                   <Link to={`/DetallesCalzado/${producto.referencia}`} onClick={() => handleImageClick(producto)}>
                     <Card.Img variant="top" id={`imagenGrande-${idx}`} src={producto.imagenUrls[0]} style={{ height: '301px', borderRadius: '10px' }} />
                   </Link>
@@ -124,10 +124,10 @@ function GaleriaGeneral() {
                       <strong>Envío Gratis</strong>
                     </Card.Text>
                     {/* miniaturas */}
-                    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+                    <Row style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
                       {producto.imagenUrls.map((imagen, index) => (
-                        <Col key={`Miniatura-${idx}-${index}`} xs="auto" className="p-0">
-                          <label className='form-control p-1'>
+                        <Col key={`Miniatura-${idx}-${index}`} xs="auto" className="p-1">
+                          <label className='form-control p-0'>
                             <img key={index} src={imagen} alt={`Miniatura ${index}`} title='Puedes cambiar la imagen, pasando el mouse/click'
                               onClick={() => cambiarImagen(`imagenGrande-${idx}`, imagen)}
                               onMouseMove={!isMobile ? () => cambiarImagen(`imagenGrande-${idx}`, imagen) : null}
@@ -136,9 +136,9 @@ function GaleriaGeneral() {
                           </label>
                         </Col>
                       ))}
-                    </div>
+                    </Row>
                   </Card.Body>
-                </Card>
+                </div>
               </Col>
             ))}
           </Row>
