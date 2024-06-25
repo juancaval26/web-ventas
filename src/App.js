@@ -7,7 +7,6 @@ import Navbar from './componentes/BarraNav';
 import Home from './componentes/Home';
 import CalzadoGeneral from './componentes/CalzadoGeneral';
 import DetallesCalzado from './componentes/DetallesCalzado';
-import Hogar from './componentes/Hogar';
 import CalzadoGenero from './componentes/CalzadoGenero';
 import CarruselDetalle from './componentes/CarruselDetalle';
 import CalzadoNuevo from './componentes/CalzadoNuevo';
@@ -40,14 +39,12 @@ useEffect(() => {
   return unsubscribe;
 }, []);
 
-
     return (
       <Router>
         <Navbar isAuthenticated={isAuthenticated} setSelectedGender={setSelectedGender}/>
         <Routes>
         <Route path="/" element={<Home />} />
           <Route path="/CalzadoGeneral" element={<CalzadoGeneral />} />
-          <Route path="/Hogar" element={<Hogar />} />
           <Route path='/CalzadoGenero/:genero' element={<CalzadoGenero />} />
           <Route path='/DetallesCalzado/:referencia' element={<DetallesCalzado />} />
           <Route path='/CarruselDetalle' element={<CarruselDetalle />} />

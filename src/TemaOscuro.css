@@ -2,8 +2,8 @@
 
 :root {
     --bg-color-light: #ffffff;
-    --text-color-light: #000000;
-    --bg-color-dark: #181818;
+    --text-color-light: #1c1e21;
+    --bg-color-dark: #1c1e21;
     --text-color-dark: #ffffff;
 }
 
@@ -76,4 +76,32 @@ a {
 .btn-dark:hover {
     background-color: var(--bg-color-dark);
     color: var(--text-color-light);
+}
+
+
+/* Estilos personalizados para el ícono del toggle */
+
+.navbar-toggler-icon {
+    background-color: #ffffff;
+    /* Fondo azul para el ícono */
+    border-radius: 5px;
+    /* Borde redondeado */
+    padding: 1.3rem;
+    /* Espaciado interno */
+}
+
+
+/* Estilos específicos para el modo claro */
+
+.light-mode .navbar-toggler-icon {
+    color: #1c1e21;
+    /* Color del ícono en modo claro */
+}
+
+
+/* Estilos específicos para el modo oscuro */
+
+.dark-mode .navbar-toggler-icon {
+    color: #ffffff;
+    /* Color del ícono en modo oscuro */
 }

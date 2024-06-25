@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import 'firebase/compat/storage';
 import "firebase/compat/auth";
@@ -12,6 +12,8 @@ function LoginRegistro() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showModal, setShowModal] = useState(false);
+    const [authenticated, setAuthenticated] = useState(false);
+
 
     const handleRegistro = async () => {
         try {
@@ -26,6 +28,21 @@ function LoginRegistro() {
             console.error("Error al registrar usuario:", error.message);
         }
     };
+
+        // Verificar el estado de autenticación cuando el componente se monta
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+              setAuthenticated(true);
+            } else {
+              setAuthenticated(false);
+              window.location.href = '/Login';
+            }
+          });
+
+            // Renderizar solo si el usuario está autenticado
+  if (!authenticated) {
+    return null; // o un mensaje de acceso denegado, etc.
+  }
 
     return (
         <div>
