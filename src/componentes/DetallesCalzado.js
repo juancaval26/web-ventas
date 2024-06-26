@@ -8,64 +8,76 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import '../App.css';
 import Destacados from './Destacados';
+import { useLocation } from 'react-router-dom';
 
 function DetallesCalzado() {
   const [productos, setProductos] = useState([]);
   const [imagenActual, setImagenActual] = useState('');
   const [isMobile, setIsMobile] = useState(false);
-
-  // Función para obtener la referencia de la URL
-  const obtenerReferenciaURL = () => {
-    // Obtener la parte de la URL después de la última barra
-    const url = window.location.href;
-    const ultimaBarraIndex = url.lastIndexOf('/');
-    const referencia = url.substring(ultimaBarraIndex + 1);
-    return referencia;
-  };
-
-  const referenciaURL = obtenerReferenciaURL();
+  const location = useLocation();
+  const producto = location.state?.producto;
 
 
-  useEffect(() => {
-    const fetchProductos = async () => {
-      try {
-        const db = firebase.firestore();
-        const productosSnapshot = await db.collection('producto').where('referencia', '==', referenciaURL).get();
-        const productosData = productosSnapshot.docs.map((doc) => doc.data());
-        setProductos(productosData);
-
-        // Establecer la primera imagen como imagen actual
-        if (productosData.length > 0) {
-          setImagenActual(productosData[0].imagenUrls[0]);
-        }
-      } catch (error) {
-        console.error('Error al obtener los productos:', error);
+    // Función para obtener la referencia de la URL
+    const obtenerReferenciaURL = () => {
+      // Obtener la parte de la URL después de la última barra
+      const url = window.location.href;
+      const ultimaBarraIndex = url.lastIndexOf('/');
+      const referencia = url.substring(ultimaBarraIndex + 1);
+      return referencia;
+    };
+  
+    const referenciaURL = obtenerReferenciaURL();
+  
+    useEffect(() => {
+      if (producto) {
+        setProductos([producto]);
+        setImagenActual(producto.imagenUrls[0]);
+      } else {
+        const fetchProductos = async () => {
+          try {
+            const db = firebase.firestore();
+            const productosSnapshot = await db.collection('producto').where('referencia', '==', referenciaURL).get();
+            const productosData = productosSnapshot.docs.map((doc) => doc.data());
+            setProductos(productosData);
+  
+            // Establecer la primera imagen como imagen actual
+            if (productosData.length > 0) {
+              setImagenActual(productosData[0].imagenUrls[0]);
+            }
+          } catch (error) {
+            console.error('Error al obtener los productos:', error);
+          }
+        };
+  
+        fetchProductos();
       }
-    };
-
-    fetchProductos();
-
-    // Detectar si el dispositivo es móvil
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768); // Cambiar a 768 o al ancho que necesites para considerar como móvil
-    };
-
-    handleResize(); // Llamar al método una vez para establecer el estado inicial
-    window.addEventListener('resize', handleResize); // Escuchar cambios en el tamaño de la ventana
-
-    return () => {
-      window.removeEventListener('resize', handleResize); // Limpiar el listener en la fase de desmontaje
-    };
-  }, []);
-
-  const currentURL = window.location.href;
-
-  // Filtrar productos basados en la coincidencia de la referencia con la URL
-  const productosFiltrados = productos.filter(producto => {
-    // Verificar si la referencia del producto está presente en la URL
-    return currentURL.includes(producto.referencia);
-  });
-
+  
+      // Detectar si el dispositivo es móvil
+      const handleResize = () => {
+        setIsMobile(window.innerWidth < 768); // Cambiar a 768 o al ancho que necesites para considerar como móvil
+      };
+  
+      handleResize(); // Llamar al método una vez para establecer el estado inicial
+      window.addEventListener('resize', handleResize); // Escuchar cambios en el tamaño de la ventana
+  
+      return () => {
+        window.removeEventListener('resize', handleResize); // Limpiar el listener en la fase de desmontaje
+      };
+    }, [producto, referenciaURL]);
+  
+    useEffect(() => {
+      // Scroll hacia arriba cuando cambia el producto
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, [producto]);
+    
+    const currentURL = window.location.href;
+  
+    // Filtrar productos basados en la coincidencia de la referencia con la URL
+    const productosFiltrados = productos.filter(producto => {
+      // Verificar si la referencia del producto está presente en la URL
+      return currentURL.includes(producto.referencia);
+    });
   const cambiarImagen = (rutaImagen) => {
     document.getElementById('imagenGrande').src = rutaImagen;
     setImagenActual(rutaImagen);
@@ -86,7 +98,7 @@ function DetallesCalzado() {
             <Row className="justify-content-center">
               <Col xs={12} sm={6} lg={12}>
                 {productosFiltrados.length > 0 && (
-                  <Image id="imagenGrande" src={imagenActual} style={{ width: '100%', height: '400px' }} rounded />
+                  <Image id="imagenGrande" src={imagenActual || producto.imagenUrls[0]} style={{ width: '100%', height: '400px' }} rounded />
                 )}
               </Col>
             </Row>

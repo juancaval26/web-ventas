@@ -87,7 +87,7 @@ function GaleriaGeneral() {
       await productoRef.update({
         clickCount: firebase.firestore.FieldValue.increment(1)
       });
-      // console.log(`Incremented click count for product ${producto.referencia}`);
+      console.log(`Incremented click count for product ${producto.referencia}`);
     } catch (error) {
       alert('Error incrementing click count:', error);
     }
