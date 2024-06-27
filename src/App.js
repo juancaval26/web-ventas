@@ -17,7 +17,7 @@ import GaleriaGeneral from './componentes/GaleriaGeneral';
 import GaleriaImagenes from './componentes/GaleriaImagenes';
 import ListarProductos from './componentes/ListarProductos';
 import CrearProducto from './componentes/CrearProductos';
-import Producto from "./componentes/Productos";
+import Productos from "./componentes/Productos";
 import LogoutButton from "./componentes/Logout";
 import Sidebar from "./componentes/Sidebar";
 import CrearResenia from "./componentes/CrearResenia";
@@ -56,7 +56,7 @@ useEffect(() => {
           <Route path='/GaleriaImagenes' element={<GaleriaImagenes />} />
           <Route path='/ListarProductos' element={<ListarProductos />} />
           <Route path='/CrearProducto' element={<CrearProducto />} />
-          <Route path='/Producto' element={<Producto />} />
+          <Route path='/Productos' element={<Productos />} />
           <Route path='/LogoutButton' element={<LogoutButton />} />
           <Route path='/Sidebar' element={<Sidebar />} />
           <Route path='/CrearResenia' element={<CrearResenia />} />

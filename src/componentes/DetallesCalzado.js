@@ -4,6 +4,9 @@ import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Card from 'react-bootstrap/Card';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import { FaRuler } from 'react-icons/fa'; // Import the icon
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import '../App.css';
@@ -16,6 +19,7 @@ function DetallesCalzado() {
   const [isMobile, setIsMobile] = useState(false);
   const location = useLocation();
   const producto = location.state?.producto;
+  const [showModal, setShowModal] = useState(false);
 
 
     // Función para obtener la referencia de la URL
@@ -88,6 +92,9 @@ function DetallesCalzado() {
   const messageWithImage = `${message} ${imagenActual}`;
   const url = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(messageWithImage)}`;
 
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
+
   return (
     <div style={{ marginTop: '70px' }}>
       <Container>
@@ -135,7 +142,9 @@ function DetallesCalzado() {
                     <strong>Talla:</strong> {producto.talla}<br />
                     <strong>Marca:</strong> {producto.marca}<br />
                     <strong>Referencia:</strong> {producto.referencia}<br />
-                    <strong>Descripción:</strong> {producto.descripcion}<br />
+                    <strong>Descripción:</strong> {producto.descripcion}<br /><br />
+                    <strong onClick={handleShowModal} style={{ cursor: 'pointer', color: 'darkgoldenrod' }}>
+                    <FaRuler size={30} style={{ marginRight: '5px' }} />GUÍA DE TALLAS</strong><br />
                     <strong>Mas Información</strong>
                     <a href={url} target="_blank" style={{ width: '192px', height: '192px' }}>
                       <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/800px-WhatsApp.svg.png" style={{ width: '10%' }} alt="" />
@@ -205,6 +214,18 @@ function DetallesCalzado() {
       </Container>
       <h1 style={{ margin: '10px', textAlign: 'center' }}>Calzado Destacado</h1>
       <Destacados />
+
+            {/* Modal for Size Guide */}
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Body>
+          <Image src={require('../img/guia_tallas.png')} fluid />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Cerrar
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }

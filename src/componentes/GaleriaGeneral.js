@@ -114,7 +114,7 @@ function GaleriaGeneral() {
               <Col key={idx} xs={6} sm={4} md={4} lg={3}>
                 <div style={{ marginBottom: '15px' }}>
                   <Link to={`/DetallesCalzado/${producto.referencia}`} onClick={() => handleImageClick(producto)}>
-                    <Card.Img variant="top" id={`imagenGrande-${idx}`} src={producto.imagenUrls[0]} style={{ height: '301px', borderRadius: '10px' }} />
+                    <Card.Img variant="top" loading="lazy" id={`imagenGrande-${idx}`} src={producto.imagenUrls[0]} style={{ height: '301px', borderRadius: '10px' }} />
                   </Link>
                   <Card.Body>
                     <Card.Title>{producto.referencia.toUpperCase()}</Card.Title>
@@ -128,7 +128,7 @@ function GaleriaGeneral() {
                       {producto.imagenUrls.map((imagen, index) => (
                         <Col key={`Miniatura-${idx}-${index}`} xs="auto" className="p-1">
                           <label className='form-control p-0'>
-                            <img key={index} src={imagen} alt={`Miniatura ${index}`} title='Puedes cambiar la imagen, pasando el mouse/click'
+                            <img key={index} loading="lazy" src={imagen} alt={`Miniatura ${index}`} title='Puedes cambiar la imagen, pasando el mouse/click'
                               onClick={() => cambiarImagen(`imagenGrande-${idx}`, imagen)}
                               onMouseMove={!isMobile ? () => cambiarImagen(`imagenGrande-${idx}`, imagen) : null}
                               style={{ height: '33px', cursor: 'pointer', borderRadius: '5px' }}

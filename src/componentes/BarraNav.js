@@ -48,7 +48,7 @@ function BarraNav({ isAuthenticated }) {
             <Link to="/CalzadoNuevo" style={{ margin: '12px', fontFamily: 'Segoe UI Historic, Segoe UI', textDecoration: 'none', color: 'inherit' }}>Nuevo</Link>
             {isAuthenticated && (
               <>
-                <Link to="/Producto" style={{ margin: '12px', fontFamily: 'Segoe UI Historic, Segoe UI', textDecoration: 'none', color: 'inherit' }}>Productos</Link>
+                <Link to="/Productos" style={{ margin: '12px', fontFamily: 'Segoe UI Historic, Segoe UI', textDecoration: 'none', color: 'inherit' }}>Productos</Link>
                 <Link to="/CrearResenia" style={{ margin: '12px', fontFamily: 'Segoe UI Historic, Segoe UI', textDecoration: 'none', color: 'inherit' }}>Comentarios</Link>
               </>
             )}
