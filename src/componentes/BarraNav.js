@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from '../img/logo.png';
 import Container from 'react-bootstrap/Container';
 import { Button } from 'react-bootstrap';
@@ -11,8 +11,22 @@ import LogoutButton from './Logout';
 import { useTheme } from './ThemeContext'; // Asumiendo que useTheme está configurado correctamente
 
 function BarraNav({ isAuthenticated }) {
+  const navigate = useNavigate();
   const [showGenero, setShowGenero] = useState(false);
   const { theme, toggleTheme } = useTheme();
+  const [selectedGender, setSelectedGender] = useState(null); // Estado para el género seleccionado
+  const [tipoGenero, settipoGenero] = useState(""); // Estado para el nombre del género seleccionado
+
+  const handleGenderClick = (gender, genderName) => {
+    setSelectedGender(gender);
+    navigate(`/CalzadoGenero/${genderName}`);
+  };
+
+  useEffect(() => {
+    if (tipoGenero) {
+      navigate(`/CalzadoHombre/${tipoGenero}`);
+    }
+  }, [tipoGenero, navigate]);
 
   const handleMouseEnterGenero = () => {
     setShowGenero(true);
@@ -41,8 +55,12 @@ function BarraNav({ isAuthenticated }) {
               onMouseLeave={handleMouseLeaveGenero}
               show={showGenero}
             >
-              <NavDropdown.Item as={Link} to="/CalzadoGenero/hombre">Hombre</NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/CalzadoGenero/mujer">Mujer</NavDropdown.Item>
+              <NavDropdown.Item onClick={() => handleGenderClick('hombre', 'Hombre')}>
+                <Link to="/CalzadoGenero" style={{ textDecoration: 'none', color: 'black', fontFamily: "Gill Sans, sans-serif" }}>Hombre</Link>
+              </NavDropdown.Item>
+              <NavDropdown.Item onClick={() => handleGenderClick('mujer', 'Mujer')}>
+                <Link to="/CalzadoGenero" style={{ textDecoration: 'none', color: 'black', fontFamily: "Gill Sans, sans-serif" }}>Mujer</Link>
+              </NavDropdown.Item>
             </NavDropdown>
             <Link to="/" style={{ margin: '12px', fontFamily: 'Segoe UI Historic, Segoe UI', textDecoration: 'none', color: 'inherit' }}>Inicio</Link>
             <Link to="/CalzadoNuevo" style={{ margin: '12px', fontFamily: 'Segoe UI Historic, Segoe UI', textDecoration: 'none', color: 'inherit' }}>Nuevo</Link>
